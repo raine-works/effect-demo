@@ -1,0 +1,9 @@
+{
+	"extends": "@effect-demo/tsconfig/base.json",
+	"compilerOptions": {
+		"baseUrl": ".",
+		"paths": {
+			"@/*": ["./src/*"]
+		}
+	}
+}

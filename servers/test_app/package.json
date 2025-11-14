@@ -1,0 +1,21 @@
+{
+	"name": "@effect-demo/test-app",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"dev": "bun run --hot src/index.ts"
+	},
+	"dependencies": {
+		"@effect/platform": "catalog:",
+		"@effect/platform-bun": "catalog:",
+		"effect": "catalog:"
+	},
+	"devDependencies": {
+		"@effect-demo/tsconfig": "workspace:*",
+		"bun-types": "catalog:"
+	},
+	"peerDependencies": {
+		"typescript": "catalog:"
+	}
+}

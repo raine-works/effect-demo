@@ -1,0 +1,9 @@
+services:
+
+  workspace:
+    container_name: pslai_workspace
+    image: mcr.microsoft.com/devcontainers/base:ubuntu
+    command: sleep infinity
+    volumes: 
+      - ../..:/workspaces:cached
+    network_mode: host

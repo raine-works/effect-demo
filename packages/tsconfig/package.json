@@ -1,0 +1,8 @@
+{
+	"name": "@effect-demo/tsconfig",
+	"private": true,
+	"files": [
+		"base.json",
+		"react-library.json"
+	]
+}
