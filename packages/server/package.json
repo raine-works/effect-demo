@@ -1,5 +1,5 @@
 {
-	"name": "@effect-demo/test-app",
+	"name": "@effect-demo/server",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
