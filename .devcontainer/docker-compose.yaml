@@ -1,9 +1,32 @@
 services:
 
   workspace:
-    container_name: pslai_workspace
+    container_name: effect_demo_workspace
     image: mcr.microsoft.com/devcontainers/base:ubuntu
     command: sleep infinity
     volumes: 
       - ../..:/workspaces:cached
     network_mode: host
+  
+  hub_database:
+    container_name: effect_demo_database
+    image: postgres:17.6
+    environment:
+      POSTGRES_USER: effect_demo_dev_user
+      POSTGRES_PASSWORD: effect_demo_dev_password
+      POSTGRES_DB: effect_demo_dev_db
+    ports:
+      - 5432:5432
+    volumes:
+      - effect_demo_database_data:/var/lib/postgresql/data
+    networks:
+      - effect_demo_dev_network
+
+volumes:
+  effect_demo_database_data:
+
+networks:
+  effect_demo_dev_network: 
+    driver: bridge
+    driver_opts:
+      com.docker.network.bridge.host_binding_ipv4: 127.0.0.1
