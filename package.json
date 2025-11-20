@@ -13,7 +13,6 @@
 			"@effect/platform-bun": "0.83.0",
 			"@effect/rpc": "0.72.1",
 			"@effect/sql": "0.48.0",
-			"@effect/sql-pg": "0.49.6",
 			"@effect-rx/rx-react": "0.42.4",
 			"@effect/cli": "0.72.1",
 			"effect": "3.19.3",
@@ -27,6 +26,8 @@
 		"build": "turbo build",
 		"build:docker": "turbo build:docker",
 		"clean": "sudo find . -name \"node_modules\" -type d -prune -exec rm -rf {} +",
+		"db:migrate": "bun run --cwd ./packages/database migrate",
+		"db:reset": "bun run --cwd ./packages/database reset",
 		"dev": "turbo dev",
 		"format": "biome format --write .",
 		"lint": "turbo lint"
