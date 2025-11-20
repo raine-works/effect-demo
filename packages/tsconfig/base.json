@@ -16,7 +16,18 @@
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
 		"allowJs": true,
-		"types": ["bun-types"]
+		"types": ["bun-types"],
+		"plugins": [
+			{
+				"name": "@effect/language-service",
+				"quickinfoEffectParameters": "always",
+				"namespaceImportPackages": ["effect", "@effect/*"],
+				"topLevelNamedReexports": "follow",
+				"diagnosticSeverity": {
+					"importFromBarrel": "error"
+				}
+			}
+		]
 	},
 	"exclude": ["node_modules", "dist", "build"]
 }

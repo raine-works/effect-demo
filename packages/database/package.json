@@ -1,0 +1,25 @@
+{
+	"name": "@effect-demo/database",
+	"private": true,
+	"version": "0.0.0",
+	"type": "module",
+	"scripts": {
+		"migrate": "bun run src/scripts/migrate.ts",
+		"reset": "bun run src/scripts/reset.ts"
+	},
+	"dependencies": {
+		"@effect-demo/sql-bun": "workspace:*",
+		"@effect/platform": "catalog:",
+		"@effect/platform-bun": "catalog:",
+		"@effect/sql": "catalog:",
+		"@effect/cli": "catalog:",
+		"effect": "catalog:"
+	},
+	"devDependencies": {
+		"@effect-demo/tsconfig": "workspace:*",
+		"bun-types": "catalog:"
+	},
+	"peerDependencies": {
+		"typescript": "catalog:"
+	}
+}
