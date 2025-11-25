@@ -15,10 +15,9 @@
 		"source=${localEnv:HOME}/.config/gh,target=/home/vscode/.config/gh,type=bind"
 	],
 	"containerEnv": {
+		"HOST_IP": "${localEnv:HOST_IP}",
 		"NODE_ENV": "development",
-		"TZ": "UTC",
-		"ADB_SERVER_SOCKET": "tcp:127.0.0.1:5037",
-		"REACT_NATIVE_PACKAGER_HOSTNAME": "127.0.0.1"
+		"TZ": "UTC"
 	},
 	"customizations": {
 		"vscode": {

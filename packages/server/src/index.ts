@@ -1,14 +1,10 @@
-import { HttpRouter, HttpServer, HttpServerResponse } from '@effect/platform';
-import { BunHttpServer, BunRuntime } from '@effect/platform-bun';
-import { Layer } from 'effect';
+import { database } from '@effect-demo/database';
+import { env } from 'bun';
 
-const router = HttpRouter.empty.pipe(
-	HttpRouter.get('/', HttpServerResponse.text('Hello World')),
-	HttpRouter.get('/ping', HttpServerResponse.text('pong'))
-);
+const db = database(env.DATABASE_URL);
 
-const app = router.pipe(HttpServer.serve(), HttpServer.withLogAddress);
+await db.$connect();
 
-const ServerLive = BunHttpServer.layer({ port: Bun.env.PORT });
+console.log(await db.user.count());
 
-BunRuntime.runMain(Layer.launch(Layer.provide(app, ServerLive)));
+await db.$disconnect();

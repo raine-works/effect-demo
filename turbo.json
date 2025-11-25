@@ -2,10 +2,10 @@
 	"$schema": "https://turborepo.org/schema.json",
 	"ui": "tui",
 	"globalPassThroughEnv": ["GITHUB_TOKEN"],
-	"globalEnv": ["HOME", "NODE_ENV", "TZ"],
+	"globalEnv": ["HOME", "HOST_IP", "NODE_ENV", "TZ"],
 	"tasks": {
 		"build": {
-			"outputs": [".build/**", "src/generated/**"]
+			"outputs": [".build/**", "dist/**", "src/generated/**"]
 		},
 		"build:docker": {
 			"cache": false
