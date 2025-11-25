@@ -3,21 +3,22 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
+	"exports": {
+		".": "./src/index.ts"
+	},
 	"scripts": {
-		"migrate": "bun run src/scripts/migrate.ts",
-		"reset": "bun run src/scripts/reset.ts"
+		"migrate": "bunx --bun prisma migrate dev --schema=./prisma/schema.prisma",
+		"build": "bunx --bun prisma generate"
 	},
 	"dependencies": {
-		"@effect-demo/sql-bun": "workspace:*",
-		"@effect/platform": "catalog:",
-		"@effect/platform-bun": "catalog:",
-		"@effect/sql": "catalog:",
-		"@effect/cli": "catalog:",
+		"@prisma/client": "catalog:",
+		"@prisma/adapter-pg": "catalog:",
 		"effect": "catalog:"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",
-		"bun-types": "catalog:"
+		"bun-types": "catalog:",
+		"prisma": "catalog:"
 	},
 	"peerDependencies": {
 		"typescript": "catalog:"

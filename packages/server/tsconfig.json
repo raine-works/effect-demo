@@ -1,3 +1,4 @@
 {
-	"extends": "@effect-demo/tsconfig/base.json"
+	"extends": "@effect-demo/tsconfig/base.json",
+	"references": [{ "path": "../database/tsconfig.json" }]
 }

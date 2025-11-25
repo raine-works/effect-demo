@@ -5,12 +5,13 @@
 	"globalEnv": ["HOME", "NODE_ENV", "TZ"],
 	"tasks": {
 		"build": {
-			"outputs": [".build/**"]
+			"outputs": [".build/**", "src/generated/**"]
 		},
 		"build:docker": {
 			"cache": false
 		},
 		"dev": {
+			"dependsOn": ["^build"],
 			"persistent": true,
 			"cache": false
 		},

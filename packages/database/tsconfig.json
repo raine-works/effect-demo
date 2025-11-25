@@ -1,9 +1,14 @@
 {
 	"extends": "@effect-demo/tsconfig/base.json",
 	"compilerOptions": {
+		"module": "ESNext",
+		"moduleResolution": "node",
+		"target": "ES2023",
+		"esModuleInterop": true,
+		"noEmit": false,
+		"emitDeclarationOnly": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/sql-bun/*": ["../sql_bun/src/*"],
 			"@/database/*": ["./src/*"]
 		}
 	}
