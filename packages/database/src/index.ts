@@ -1,6 +1,6 @@
 import { PrismaPg } from '@prisma/adapter-pg';
-import { PrismaClient } from '@/database/generated/client';
-import { useUser } from '@/database/handlers/user';
+import { Prisma, PrismaClient } from '@/database/generated/client';
+import { userHandler } from '@/database/handlers/user';
 
 export const database = (connectionString: string) => {
 	const adapter = new PrismaPg({ connectionString });
@@ -9,7 +9,9 @@ export const database = (connectionString: string) => {
 	return {
 		client,
 		handlers: {
-			user: useUser(client)
+			user: userHandler(client)
 		}
 	};
 };
+
+export { Prisma };

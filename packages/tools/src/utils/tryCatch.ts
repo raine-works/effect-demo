@@ -1,3 +1,14 @@
+type ErrorCodes = 'P2002';
+
+export class CustomError extends Error {
+	code: ErrorCodes;
+	constructor(options: { message?: string; code: ErrorCodes; cause?: Error }) {
+		super(options.message, { cause: options.cause });
+		this.name = this.constructor.name;
+		this.code = options.code;
+	}
+}
+
 type Success<T> = {
 	data: T;
 	error: null;
@@ -8,7 +19,7 @@ type Failure<E> = {
 	error: E;
 };
 
-type Result<T, E = Error> = Success<T> | Failure<E>;
+type Result<T, E = CustomError> = Success<T> | Failure<E>;
 
 /**
  * Property to handle try-catch in async functions.
@@ -26,7 +37,7 @@ type Result<T, E = Error> = Success<T> | Failure<E>;
  * @see
  * @returns
  */
-export async function tryCatch<T, E = Error>(promise: Promise<T>): Promise<Result<T, E>> {
+export async function tryCatch<T, E = CustomError>(promise: Promise<T>): Promise<Result<T, E>> {
 	try {
 		const data = await promise;
 		return { data, error: null };

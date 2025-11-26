@@ -11,6 +11,7 @@
 		"build": "bunx --bun prisma generate"
 	},
 	"dependencies": {
+		"@effect-demo/tools": "workspace:*",
 		"@prisma/client": "catalog:",
 		"@prisma/adapter-pg": "catalog:"
 	},

@@ -18,6 +18,7 @@
       "name": "@effect-demo/database",
       "version": "0.0.0",
       "dependencies": {
+        "@effect-demo/tools": "workspace:*",
         "@prisma/adapter-pg": "catalog:",
         "@prisma/client": "catalog:",
       },

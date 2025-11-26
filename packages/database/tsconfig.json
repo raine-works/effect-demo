@@ -2,7 +2,6 @@
 	"extends": "@effect-demo/tsconfig/base.json",
 	"compilerOptions": {
 		"module": "ESNext",
-		"moduleResolution": "node",
 		"target": "ES2023",
 		"esModuleInterop": true,
 		"noEmit": false,
