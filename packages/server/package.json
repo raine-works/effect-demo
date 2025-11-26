@@ -8,7 +8,8 @@
 	},
 	"dependencies": {
 		"@effect-demo/database": "workspace:*",
-		"hono": "catalog:"
+		"hono": "catalog:",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",

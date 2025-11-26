@@ -1,10 +1,30 @@
-import { database } from '@effect-demo/database';
-import { env } from 'bun';
+import { serve } from 'bun';
+import { Hono } from 'hono';
+import { compress } from 'hono/compress';
+import { env } from '@/lib/env';
 
-const db = database(env.DATABASE_URL);
+const app = new Hono();
+app.use(compress({ encoding: 'gzip' }));
+app.get('/healthz', (c) => c.text('OK'));
 
-await db.$connect();
+const api = app.basePath('/api');
 
-console.log(await db.user.count());
+const startServer = (port: number) => {
+	console.log(`Starting server on port ${port}...`);
+	return serve({
+		fetch: api.fetch,
+		development: env.NODE_ENV === 'development',
+		port
+	});
+};
 
-await db.$disconnect();
+const server = startServer(Number(env.PORT));
+
+const stopServer = async () => {
+	console.log('Stopping server...');
+	await server.stop();
+	process.exit(0);
+};
+
+process.on('SIGINT', stopServer);
+process.on('SIGTERM', stopServer);
