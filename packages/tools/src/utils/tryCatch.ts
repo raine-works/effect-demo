@@ -2,10 +2,12 @@ type ErrorCodes = 'P2002';
 
 export class CustomError extends Error {
 	code: ErrorCodes;
+	id: string;
 	constructor(options: { message?: string; code: ErrorCodes; cause?: Error }) {
 		super(options.message, { cause: options.cause });
 		this.name = this.constructor.name;
 		this.code = options.code;
+		this.id = Bun.randomUUIDv7();
 	}
 }
 

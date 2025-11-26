@@ -21,7 +21,7 @@ export const userRoute = new Hono()
 
 			if (error) {
 				c.status(500);
-				return c.json({ error: error.message });
+				return c.json({ error: { id: error.id, code: error.code, message: error.message } });
 			}
 
 			return c.json(data);
@@ -44,7 +44,7 @@ export const userRoute = new Hono()
 
 			if (error) {
 				c.status(error.code === 'P2002' ? 400 : 500);
-				return c.json({ error: error.message });
+				return c.json({ error: { id: error.id, code: error.code, message: error.message } });
 			}
 
 			c.status(201);
