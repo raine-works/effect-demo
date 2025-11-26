@@ -1,7 +1,12 @@
+import { database } from '@effect-demo/database';
 import { serve } from 'bun';
 import { Hono } from 'hono';
 import { compress } from 'hono/compress';
 import { env } from '@/lib/env';
+
+const db = database(env.DATABASE_URL);
+
+console.log(await db.handlers.user.getAllUsers());
 
 const app = new Hono();
 app.use(compress({ encoding: 'gzip' }));
@@ -20,11 +25,8 @@ const startServer = (port: number) => {
 
 const server = startServer(Number(env.PORT));
 
-const stopServer = async () => {
+process.on('SIGTERM', async () => {
 	console.log('Stopping server...');
 	await server.stop();
 	process.exit(0);
-};
-
-process.on('SIGINT', stopServer);
-process.on('SIGTERM', stopServer);
+});
