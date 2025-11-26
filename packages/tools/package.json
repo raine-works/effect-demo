@@ -1,18 +1,13 @@
 {
-	"name": "@effect-demo/server",
+	"name": "@effect-demo/tools",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"scripts": {
-		"dev": "bun run --hot src/index.ts"
-	},
-	"dependencies": {
-		"@effect-demo/database": "workspace:*",
-		"hono": "catalog:"
+	"exports": {
+		"./utils/*": "./src/utils/*.ts"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",
-		"@effect-demo/tools": "workspace:*",
 		"bun-types": "catalog:"
 	},
 	"peerDependencies": {

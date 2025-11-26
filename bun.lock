@@ -56,7 +56,20 @@
       "version": "0.0.0",
       "dependencies": {
         "@effect-demo/database": "workspace:*",
+        "hono": "catalog:",
       },
+      "devDependencies": {
+        "@effect-demo/tools": "workspace:*",
+        "@effect-demo/tsconfig": "workspace:*",
+        "bun-types": "catalog:",
+      },
+      "peerDependencies": {
+        "typescript": "catalog:",
+      },
+    },
+    "packages/tools": {
+      "name": "@effect-demo/tools",
+      "version": "0.0.0",
       "devDependencies": {
         "@effect-demo/tsconfig": "workspace:*",
         "bun-types": "catalog:",
@@ -82,6 +95,7 @@
     "@rsbuild/plugin-type-check": "1.2.4",
     "@types/react": "18.3.25",
     "bun-types": "1.3.3",
+    "hono": "4.10.6",
     "prisma": "7.0.1",
     "turbo": "2.5.8",
     "typescript": "5.9.3",
@@ -122,6 +136,8 @@
     "@effect-demo/mobile": ["@effect-demo/mobile@workspace:packages/mobile"],
 
     "@effect-demo/server": ["@effect-demo/server@workspace:packages/server"],
+
+    "@effect-demo/tools": ["@effect-demo/tools@workspace:packages/tools"],
 
     "@effect-demo/tsconfig": ["@effect-demo/tsconfig@workspace:packages/tsconfig"],
 
@@ -727,7 +743,7 @@
 
     "hasown": ["hasown@2.0.2", "", { "dependencies": { "function-bind": "^1.1.2" } }, "sha512-0hJU9SCPvmMzIBdZFqNPXWa6dqh7WdH0cII9y+CyS8rG3nL48Bclra9HmKhVVUHyPWNH5Y7xDwAB7bfgSjkUMQ=="],
 
-    "hono": ["hono@4.7.10", "", {}, "sha512-QkACju9MiN59CKSY5JsGZCYmPZkA6sIW6OFCUp7qDjZu6S6KHtJHhAc9Uy9mV9F8PJ1/HQ3ybZF2yjCa/73fvQ=="],
+    "hono": ["hono@4.10.6", "", {}, "sha512-BIdolzGpDO9MQ4nu3AUuDwHZZ+KViNm+EZ75Ae55eMXMqLVhDFqEMXxtUe9Qh8hjL+pIna/frs2j6Y2yD5Ua/g=="],
 
     "htm": ["htm@3.1.1", "", {}, "sha512-983Vyg8NwUE7JkZ6NmOqpCZ+sh1bKv2iYTlUkzlWmA5JD2acKoxd4KVxbMmxX/85mtfdnDmTFoNKcg5DGAvxNQ=="],
 
@@ -1226,6 +1242,8 @@
     "xtend": ["xtend@4.0.2", "", {}, "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ=="],
 
     "zeptomatch": ["zeptomatch@2.0.2", "", { "dependencies": { "grammex": "^3.1.10" } }, "sha512-H33jtSKf8Ijtb5BW6wua3G5DhnFjbFML36eFu+VdOoVY4HD9e7ggjqdM6639B+L87rjnR6Y+XeRzBXZdy52B/g=="],
+
+    "@prisma/dev/hono": ["hono@4.7.10", "", {}, "sha512-QkACju9MiN59CKSY5JsGZCYmPZkA6sIW6OFCUp7qDjZu6S6KHtJHhAc9Uy9mV9F8PJ1/HQ3ybZF2yjCa/73fvQ=="],
 
     "@prisma/engines/@prisma/get-platform": ["@prisma/get-platform@7.0.1", "", { "dependencies": { "@prisma/debug": "7.0.1" } }, "sha512-DrsGnZOsF7PlAE7UtqmJenWti87RQtg7v9qW9alS71Pj0P6ZQV0RuzRQaql9dCWoo6qKAaF5U/L4kI826MmiZg=="],
 
