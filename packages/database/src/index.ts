@@ -1,6 +1,6 @@
 import { PrismaPg } from '@prisma/adapter-pg';
 import { PrismaClient } from '@/database/generated/client';
-import { useUser } from './handlers/user';
+import { useUser } from '@/database/handlers/user';
 
 export const database = (connectionString: string) => {
 	const adapter = new PrismaPg({ connectionString });

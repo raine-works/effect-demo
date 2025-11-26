@@ -8,6 +8,7 @@
 	},
 	"dependencies": {
 		"@effect-demo/database": "workspace:*",
+		"@hono/zod-validator": "catalog:",
 		"hono": "catalog:",
 		"zod": "catalog:"
 	},

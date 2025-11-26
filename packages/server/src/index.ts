@@ -1,22 +1,22 @@
-import { database } from '@effect-demo/database';
 import { serve } from 'bun';
 import { Hono } from 'hono';
 import { compress } from 'hono/compress';
+import { useDatabase } from '@/lib/database';
 import { env } from '@/lib/env';
-
-const db = database(env.DATABASE_URL);
-
-console.log(await db.handlers.user.getAllUsers());
+import { userRoute } from '@/routes/user';
 
 const app = new Hono();
 app.use(compress({ encoding: 'gzip' }));
 app.get('/healthz', (c) => c.text('OK'));
 
 const api = app.basePath('/api');
+api.use(useDatabase);
+api.route('/user', userRoute);
 
 const startServer = (port: number) => {
 	console.log(`Starting server on port ${port}...`);
 	return serve({
+		hostname: '0.0.0.0',
 		fetch: api.fetch,
 		development: env.NODE_ENV === 'development',
 		port

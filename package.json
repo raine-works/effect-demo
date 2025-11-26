@@ -17,6 +17,7 @@
 			"@rsbuild/plugin-type-check": "1.2.4",
 			"@lynx-js/react": "0.114.5",
 			"@types/react": "18.3.25",
+			"@hono/zod-validator": "0.7.5",
 			"prisma": "7.0.1",
 			"hono": "4.10.6",
 			"zod": "4.1.13",
@@ -30,8 +31,6 @@
 		"build": "turbo build",
 		"build:docker": "turbo build:docker",
 		"clean": "sudo find . -name \"node_modules\" -type d -prune -exec rm -rf {} +",
-		"db:migrate": "bun run --cwd ./packages/database migrate",
-		"db:reset": "bun run --cwd ./packages/database reset",
 		"dev": "turbo dev",
 		"format": "biome format --write .",
 		"lint": "turbo lint"
