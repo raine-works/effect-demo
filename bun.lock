@@ -36,8 +36,10 @@
       "version": "0.0.0",
       "dependencies": {
         "@lynx-js/react": "catalog:",
+        "hono": "catalog:",
       },
       "devDependencies": {
+        "@effect-demo/server": "workspace:*",
         "@effect-demo/tsconfig": "workspace:*",
         "@lynx-js/preact-devtools": "catalog:",
         "@lynx-js/qrcode-rsbuild-plugin": "catalog:",

@@ -1,9 +1,12 @@
 import { CustomError, tryCatch } from '@effect-demo/tools/utils/tryCatch';
-import type { Prisma, PrismaClient } from '@/database/generated/client';
+import type { Prisma } from '@/database/generated/client';
+import type { AbortableClient } from '@/database/lib/abortableClient';
 
-export const userHandler = (client: PrismaClient) => {
+export const userHandler = (abortable: AbortableClient) => {
 	return {
-		getAllUsers: async (args: { page: number; pageSize: number }) => {
+		getAllUsers: async (args: { page: number; pageSize: number }, signal?: AbortSignal) => {
+			const client = abortable.withAbort(signal);
+
 			const skip = (args.page - 1) * args.pageSize;
 			const take = skip + args.pageSize;
 			const records = await client.$transaction([client.user.count(), client.user.findMany({ skip, take })]);
@@ -14,8 +17,12 @@ export const userHandler = (client: PrismaClient) => {
 				records: records[1]
 			};
 		},
-		createUser: async (args: Prisma.UserCreateArgs['data']) => {
-			const { error, data } = await tryCatch(client.user.create({ data: { name: args.name, email: args.email } }));
+		createUser: async (args: Prisma.UserCreateArgs['data'], signal?: AbortSignal) => {
+			const client = abortable.withAbort(signal);
+
+			const { error, data } = await tryCatch(
+				client.$transaction([client.user.create({ data: { name: args.name, email: args.email } })])
+			);
 
 			if (error?.code === 'P2002') {
 				throw new CustomError({
@@ -29,7 +36,7 @@ export const userHandler = (client: PrismaClient) => {
 				throw error;
 			}
 
-			return data;
+			return data[0];
 		}
 	};
 };

@@ -3,7 +3,7 @@
 	"compilerOptions": {
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@server/*": ["./src/*"]
 		}
 	},
 	"references": [{ "path": "../database/tsconfig.json" }]

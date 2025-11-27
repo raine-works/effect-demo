@@ -4,10 +4,17 @@
 		"strict": true,
 		"isolatedModules": true,
 		"verbatimModuleSyntax": true,
-
 		"esModuleInterop": true,
-		"skipLibCheck": true
+		"skipLibCheck": true,
+		"baseUrl": ".",
+		"paths": {
+			"@mobile/*": ["./src/*"]
+		}
 	},
-	"references": [{ "path": "./tsconfig.node.json" }, { "path": "./src" }],
+	"references": [
+		{ "path": "./tsconfig.node.json" },
+		{ "path": "./src" },
+		{ "path": "../server/tsconfig.json" }
+	],
 	"files": []
 }

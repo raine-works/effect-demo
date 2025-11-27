@@ -1,6 +1,6 @@
 import { database } from '@effect-demo/database';
+import { env } from '@server/lib/env';
 import { createMiddleware } from 'hono/factory';
-import { env } from '@/lib/env';
 
 const db = database(env.DATABASE_URL);
 

@@ -1,9 +1,9 @@
+import { useDatabase } from '@server/lib/database';
+import { env } from '@server/lib/env';
+import { userRoute } from '@server/routes/user';
 import { serve } from 'bun';
 import { Hono } from 'hono';
 import { compress } from 'hono/compress';
-import { useDatabase } from '@/lib/database';
-import { env } from '@/lib/env';
-import { userRoute } from '@/routes/user';
 
 const app = new Hono();
 app.use(compress({ encoding: 'gzip' }));
@@ -30,3 +30,7 @@ process.on('SIGTERM', async () => {
 	await server.stop();
 	process.exit(0);
 });
+
+type Api = typeof api;
+
+export type { Api };
