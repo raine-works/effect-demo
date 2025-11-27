@@ -17,14 +17,15 @@ export const userRoute = new Hono()
 			})
 		),
 		async (c) => {
-			const { error, data } = await tryCatch(c.var.db.handlers.user.getAllUsers(c.req.valid('query')));
+			const { error, data } = await tryCatch(
+				c.var.db.handlers.user.getAllUsers(c.req.valid('query'), c.req.raw.signal)
+			);
 
 			if (error) {
-				c.status(500);
-				return c.json({ error: { id: error.id, code: error.code, message: error.message } });
+				return c.json({ error: { id: error.id, code: error.code, message: error.message } }, 500);
 			}
 
-			return c.json(data);
+			return c.json(data, 200);
 		}
 	)
 	/**********************
@@ -40,14 +41,15 @@ export const userRoute = new Hono()
 			})
 		),
 		async (c) => {
-			const { error, data } = await tryCatch(c.var.db.handlers.user.createUser(c.req.valid('json')));
+			const { error, data } = await tryCatch(c.var.db.handlers.user.createUser(c.req.valid('json'), c.req.raw.signal));
 
 			if (error) {
-				c.status(error.code === 'P2002' ? 400 : 500);
-				return c.json({ error: { id: error.id, code: error.code, message: error.message } });
+				return c.json(
+					{ error: { id: error.id, code: error.code, message: error.message } },
+					error.code === 'P2002' ? 400 : 500
+				);
 			}
 
-			c.status(201);
-			return c.json(data);
+			return c.json(data, 201);
 		}
 	);

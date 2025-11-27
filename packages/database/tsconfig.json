@@ -10,5 +10,6 @@
 		"paths": {
 			"@/database/*": ["./src/*"]
 		}
-	}
+	},
+	"include": ["./src/**/*.ts"]
 }

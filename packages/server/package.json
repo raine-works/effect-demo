@@ -5,7 +5,7 @@
 	"type": "module",
 	"types": "./src/index.ts",
 	"scripts": {
-		"dev": "bun run --hot src/index.ts"
+		"dev": "bun run --hot ./src/index.ts"
 	},
 	"dependencies": {
 		"@effect-demo/database": "workspace:*",

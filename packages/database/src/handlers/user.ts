@@ -1,27 +1,36 @@
 import { CustomError, tryCatch } from '@effect-demo/tools/utils/tryCatch';
 import type { Prisma } from '@/database/generated/client';
-import type { AbortableClient } from '@/database/lib/abortableClient';
+import type { ExtendedPrismaClient } from '@/database/index';
 
-export const userHandler = (abortable: AbortableClient) => {
+export const userHandler = (client: ExtendedPrismaClient) => {
 	return {
-		getAllUsers: async (args: { page: number; pageSize: number }, signal?: AbortSignal) => {
-			const client = abortable.withAbort(signal);
-
+		getAllUsers: async (args: { page: number; pageSize: number }, signal: AbortSignal) => {
 			const skip = (args.page - 1) * args.pageSize;
 			const take = skip + args.pageSize;
-			const records = await client.$transaction([client.user.count(), client.user.findMany({ skip, take })]);
+			const { error, data } = await tryCatch(
+				client.$cancellableTransaction(signal, async (tx) => {
+					return {
+						count: await tx.user.count(),
+						records: await tx.user.findMany({ skip, take })
+					};
+				})
+			);
+
+			if (error) {
+				throw error;
+			}
 
 			return {
 				page: args.page,
-				pages: Math.max(Math.ceil(records[0] / args.pageSize), 1),
-				records: records[1]
+				pages: Math.max(Math.ceil(data.count / args.pageSize), 1),
+				records: data.records
 			};
 		},
-		createUser: async (args: Prisma.UserCreateArgs['data'], signal?: AbortSignal) => {
-			const client = abortable.withAbort(signal);
-
+		createUser: async (args: Prisma.UserCreateArgs['data'], signal: AbortSignal) => {
 			const { error, data } = await tryCatch(
-				client.$transaction([client.user.create({ data: { name: args.name, email: args.email } })])
+				client.$cancellableTransaction(signal, async (tx) => {
+					return await tx.user.create({ data: { name: args.name, email: args.email } });
+				})
 			);
 
 			if (error?.code === 'P2002') {
@@ -36,7 +45,7 @@ export const userHandler = (abortable: AbortableClient) => {
 				throw error;
 			}
 
-			return data[0];
+			return { name: data.name, email: data.email };
 		}
 	};
 };
