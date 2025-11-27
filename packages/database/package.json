@@ -3,20 +3,20 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"exports": {
-		".": "./src/index.ts"
-	},
+	"types": "./.types/index.d.ts",
+	"main": "./src/index.ts",
 	"scripts": {
 		"migrate": "bunx --bun prisma migrate dev --schema=./prisma/schema.prisma",
-		"build": "bunx --bun prisma generate"
+		"build": "tsc && bunx --bun prisma generate"
 	},
 	"dependencies": {
 		"@effect-demo/tools": "workspace:*",
-		"@prisma/client": "catalog:",
-		"@prisma/adapter-pg": "catalog:"
+		"@prisma/client": "catalog:"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",
+		"@prisma/adapter-pg": "catalog:",
+		"@types/node": "catalog:",
 		"bun-types": "catalog:",
 		"prisma": "catalog:"
 	},

@@ -4,12 +4,17 @@
 		"strict": true,
 		"baseUrl": ".",
 		"paths": {
-			"@/*": ["./src/*"]
+			"@database/*": ["../database/src/*"],
+			"@server/*": ["../server/src/*"],
+			"@tools/*": ["../tools/src/*"],
+			"@mobile/*": ["./src/*"]
 		}
 	},
-	"references": [
-		{ "path": "../server/tsconfig.json" },
-		{ "path": "../database/tsconfig.json" }
+	"include": [
+		"./src/**/*.ts",
+		"./src/**/*.tsx",
+		".expo/types/**/*.ts",
+		"expo-env.d.ts"
 	],
-	"include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
+	"references": [{ "path": "../server/tsconfig.json" }]
 }

@@ -2,7 +2,7 @@
 	"$schema": "https://json.schemastore.org/tsconfig",
 	"display": "Default",
 	"compilerOptions": {
-		"lib": ["ESNext"],
+		"lib": ["ESNext", "DOM"],
 		"module": "ESNext",
 		"target": "ESNext",
 		"moduleResolution": "bundler",
@@ -15,6 +15,7 @@
 		"skipLibCheck": true,
 		"allowSyntheticDefaultImports": true,
 		"forceConsistentCasingInFileNames": true,
+		"preserveSymlinks": true,
 		"allowJs": true,
 		"types": ["bun-types"]
 	},

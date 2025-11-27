@@ -36,8 +36,10 @@
 		"hono": "catalog:"
 	},
 	"devDependencies": {
+		"@effect-demo/tools": "workspace:*",
 		"@effect-demo/server": "workspace:*",
 		"@types/react": "catalog:",
+		"@types/node": "catalog:",
 		"bun-types": "catalog:"
 	},
 	"peerDependencies": {

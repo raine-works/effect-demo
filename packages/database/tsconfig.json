@@ -6,9 +6,13 @@
 		"esModuleInterop": true,
 		"noEmit": false,
 		"emitDeclarationOnly": true,
+		"declarationDir": "./.types",
+		"tsBuildInfoFile": "./.types/tsconfig.tsbuildinfo",
+		"rootDir": "./src",
 		"baseUrl": ".",
 		"paths": {
-			"@/database/*": ["./src/*"]
+			"@tools/*": ["../tools/src/*"],
+			"@database/*": ["./src/*"]
 		}
 	},
 	"include": ["./src/**/*.ts"]

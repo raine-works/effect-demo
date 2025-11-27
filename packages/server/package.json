@@ -3,19 +3,22 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"types": "./src/index.ts",
+	"types": "./.types/index.d.ts",
 	"scripts": {
+		"build": "tsc",
 		"dev": "bun run --hot ./src/index.ts"
 	},
 	"dependencies": {
+		"@effect-demo/tools": "workspace:*",
 		"@effect-demo/database": "workspace:*",
+		"@prisma/adapter-pg": "catalog:",
 		"@hono/zod-validator": "catalog:",
 		"hono": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",
-		"@effect-demo/tools": "workspace:*",
+		"@types/node": "catalog:",
 		"bun-types": "catalog:"
 	},
 	"peerDependencies": {

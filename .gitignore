@@ -5,8 +5,9 @@ node_modules/
 .turbo/
 
 # Outputs
-dist/
+.types/
 .expo/
+dist/
 
 # Native
 .kotlin/

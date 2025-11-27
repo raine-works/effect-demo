@@ -1,6 +1,6 @@
-import { CustomError, tryCatch } from '@effect-demo/tools/utils/tryCatch';
-import type { Prisma } from '@/database/generated/client';
-import type { ExtendedPrismaClient } from '@/database/index';
+import type { Prisma } from '@database/generated/client';
+import type { ExtendedPrismaClient } from '@database/index';
+import { CustomError, tryCatch } from '@effect-demo/tools';
 
 export const userHandler = (client: ExtendedPrismaClient) => {
 	return {
@@ -45,7 +45,7 @@ export const userHandler = (client: ExtendedPrismaClient) => {
 				throw error;
 			}
 
-			return { name: data.name, email: data.email };
+			return data;
 		}
 	};
 };

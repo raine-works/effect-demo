@@ -3,11 +3,14 @@
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
-	"exports": {
-		"./utils/*": "./src/utils/*.ts"
+	"types": "./.types/index.d.ts",
+	"main": "./src/index.ts",
+	"scripts": {
+		"build": "tsc"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",
+		"@types/node": "catalog:",
 		"bun-types": "catalog:"
 	},
 	"peerDependencies": {

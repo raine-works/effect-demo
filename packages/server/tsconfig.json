@@ -3,10 +3,16 @@
 	"compilerOptions": {
 		"noEmit": false,
 		"emitDeclarationOnly": true,
+		"declarationDir": "./.types",
+		"tsBuildInfoFile": "./.types/tsconfig.tsbuildinfo",
+		"rootDir": "./src",
 		"baseUrl": ".",
 		"paths": {
+			"@database/*": ["../database/src/*"],
+			"@tools/*": ["../tools/src/*"],
 			"@server/*": ["./src/*"]
 		}
 	},
+	"include": ["./src/**/*.ts"],
 	"references": [{ "path": "../database/tsconfig.json" }]
 }

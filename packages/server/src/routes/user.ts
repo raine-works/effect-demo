@@ -1,4 +1,4 @@
-import { tryCatch } from '@effect-demo/tools/utils/tryCatch';
+import { tryCatch } from '@effect-demo/tools';
 import { zValidator } from '@hono/zod-validator';
 import { Hono } from 'hono';
 import { z } from 'zod';

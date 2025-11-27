@@ -1,4 +1,4 @@
-import { Prisma, type PrismaClient } from '@/database/generated/client';
+import { Prisma, type PrismaClient } from '@database/generated/client';
 
 export const cancellableTransactionExtension = Prisma.defineExtension((client) => {
 	return client.$extends({

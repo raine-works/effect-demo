@@ -39,11 +39,11 @@ type Result<T, E = CustomError> = Success<T> | Failure<E>;
  * @see
  * @returns
  */
-export async function tryCatch<T, E = CustomError>(promise: Promise<T>): Promise<Result<T, E>> {
+export const tryCatch = async <T, E = CustomError>(promise: Promise<T>): Promise<Result<T, E>> => {
 	try {
 		const data = await promise;
 		return { data, error: null };
 	} catch (error) {
 		return { data: null, error: error as E };
 	}
-}
+};

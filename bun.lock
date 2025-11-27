@@ -8,7 +8,6 @@
         "@biomejs/biome": "catalog:",
         "@effect-demo/tsconfig": "workspace:*",
         "@expo/ngrok": "catalog:",
-        "bun-types": "catalog:",
         "turbo": "catalog:",
       },
       "peerDependencies": {
@@ -20,11 +19,12 @@
       "version": "0.0.0",
       "dependencies": {
         "@effect-demo/tools": "workspace:*",
-        "@prisma/adapter-pg": "catalog:",
         "@prisma/client": "catalog:",
       },
       "devDependencies": {
         "@effect-demo/tsconfig": "workspace:*",
+        "@prisma/adapter-pg": "catalog:",
+        "@types/node": "catalog:",
         "bun-types": "catalog:",
         "prisma": "catalog:",
       },
@@ -66,6 +66,8 @@
       },
       "devDependencies": {
         "@effect-demo/server": "workspace:*",
+        "@effect-demo/tools": "workspace:*",
+        "@types/node": "catalog:",
         "@types/react": "catalog:",
         "bun-types": "catalog:",
       },
@@ -78,13 +80,15 @@
       "version": "0.0.0",
       "dependencies": {
         "@effect-demo/database": "workspace:*",
+        "@effect-demo/tools": "workspace:*",
         "@hono/zod-validator": "catalog:",
+        "@prisma/adapter-pg": "catalog:",
         "hono": "catalog:",
         "zod": "catalog:",
       },
       "devDependencies": {
-        "@effect-demo/tools": "workspace:*",
         "@effect-demo/tsconfig": "workspace:*",
+        "@types/node": "catalog:",
         "bun-types": "catalog:",
       },
       "peerDependencies": {
@@ -96,6 +100,7 @@
       "version": "0.0.0",
       "devDependencies": {
         "@effect-demo/tsconfig": "workspace:*",
+        "@types/node": "catalog:",
         "bun-types": "catalog:",
       },
       "peerDependencies": {
@@ -115,6 +120,7 @@
     "@prisma/adapter-pg": "7.0.1",
     "@prisma/client": "7.0.1",
     "@react-navigation/native": "7.1.19",
+    "@types/node": "24.10.1",
     "@types/react": "19.1.10",
     "@types/react-dom": "19.1.0",
     "babel-preset-expo": "54.0.6",

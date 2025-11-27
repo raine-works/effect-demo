@@ -5,7 +5,12 @@
 	"globalEnv": ["HOME", "HOST_IP", "NODE_ENV", "TZ"],
 	"tasks": {
 		"build": {
-			"outputs": ["dist/**", "src/generated/**"]
+			"outputs": [
+				"./.types/**",
+				"./.expo/**",
+				"./dist/**",
+				"./src/generated/**"
+			]
 		},
 		"build:docker": {
 			"cache": false
