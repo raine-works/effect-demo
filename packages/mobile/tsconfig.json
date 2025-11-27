@@ -1,20 +1,11 @@
 {
-	"extends": "@effect-demo/tsconfig/base.json",
+	"extends": "expo/tsconfig.base",
 	"compilerOptions": {
 		"strict": true,
-		"isolatedModules": true,
-		"verbatimModuleSyntax": true,
-		"esModuleInterop": true,
-		"skipLibCheck": true,
 		"baseUrl": ".",
 		"paths": {
-			"@mobile/*": ["./src/*"]
+			"@/*": ["./src/*"]
 		}
 	},
-	"references": [
-		{ "path": "./tsconfig.node.json" },
-		{ "path": "./src" },
-		{ "path": "../server/tsconfig.json" }
-	],
-	"files": []
+	"include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts"]
 }
