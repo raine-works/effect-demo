@@ -1,3 +1,4 @@
+import type { database } from '@effect-demo/database';
 import { useDatabase } from '@server/lib/database';
 import { env } from '@server/lib/env';
 import { userRoute } from '@server/routes/user';
@@ -6,7 +7,13 @@ import { Hono } from 'hono';
 import { compress } from 'hono/compress';
 import { cors } from 'hono/cors';
 
-const app = new Hono()
+export type HonoEnv = {
+	Variables: {
+		db: ReturnType<typeof database>;
+	};
+};
+
+const app = new Hono<HonoEnv>()
 	.use(
 		'/api/*',
 		cors({

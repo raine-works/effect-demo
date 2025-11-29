@@ -1,9 +1,10 @@
 import { tryCatch } from '@effect-demo/tools';
 import { zValidator } from '@hono/zod-validator';
+import type { HonoEnv } from '@server/index';
 import { Hono } from 'hono';
 import { z } from 'zod';
 
-export const userRoute = new Hono()
+export const userRoute = new Hono<HonoEnv>()
 	/****************************
 	 * Get all users paginated. *
 	 ****************************/
