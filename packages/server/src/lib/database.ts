@@ -1,10 +1,8 @@
 import { database } from '@effect-demo/database';
-import { PrismaPg } from '@prisma/adapter-pg';
 import { env } from '@server/lib/env';
 import { createMiddleware } from 'hono/factory';
 
-const adapter = new PrismaPg(env.DATABASE_URL);
-const db = database(adapter);
+const db = database(env.DATABASE_URL);
 
 export const useDatabase = createMiddleware(async (c, next) => {
 	c.set('db', db);

@@ -11,7 +11,6 @@
 	"dependencies": {
 		"@effect-demo/tools": "workspace:*",
 		"@effect-demo/database": "workspace:*",
-		"@prisma/adapter-pg": "catalog:",
 		"@hono/zod-validator": "catalog:",
 		"hono": "catalog:",
 		"zod": "catalog:"

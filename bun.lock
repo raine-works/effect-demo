@@ -82,7 +82,6 @@
         "@effect-demo/database": "workspace:*",
         "@effect-demo/tools": "workspace:*",
         "@hono/zod-validator": "catalog:",
-        "@prisma/adapter-pg": "catalog:",
         "hono": "catalog:",
         "zod": "catalog:",
       },

@@ -1,18 +1,31 @@
 import { client } from '@mobile/lib/rpcClient';
-import { useEffect } from 'react';
+import { tryCatch } from '@tools/lib/tryCatch';
+import { Link } from 'expo-router';
+import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
+
+type UserList = Extract<
+	Awaited<ReturnType<Awaited<ReturnType<typeof client.api.user.$get>>['json']>>,
+	{ page: number }
+>;
 
 export default function TabOneScreen() {
 	const controller = new AbortController();
+	const [users, setUsers] = useState<UserList | null>(null);
 
 	const getUserList = async () => {
-		const res = await client.api.user.$post(
-			{ json: { name: 'Test User', email: 'test2@test.com' } },
-			{ init: { signal: controller.signal } }
+		const { error, data } = await tryCatch(
+			client.api.user.$get({ query: { page: '1', pageSize: '30' } }, { init: { signal: controller.signal } })
 		);
-		const users = await res.json();
 
-		console.log(users);
+		if (error) {
+			return console.error(error.message);
+		}
+
+		if (data.status === 200) {
+			const userList = await data.json();
+			setUsers(userList);
+		}
 	};
 
 	useEffect(() => {
@@ -25,7 +38,10 @@ export default function TabOneScreen() {
 
 	return (
 		<View>
-			<Text>Hello World!</Text>
+			{users?.records.map((record, key) => {
+				return <Text key={key}>{record.name}</Text>;
+			})}
+			<Link href="https://google.com">Test</Link>
 		</View>
 	);
 }
