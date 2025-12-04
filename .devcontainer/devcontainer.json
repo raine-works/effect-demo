@@ -28,7 +28,8 @@
 				"mhutchie.git-graph",
 				"waderyan.gitblame",
 				"oven.bun-vscode",
-				"biomejs.biome"
+				"biomejs.biome",
+				"Prisma.prisma"
 			]
 		}
 	}

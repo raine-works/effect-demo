@@ -8,6 +8,7 @@
         "@biomejs/biome": "catalog:",
         "@effect-demo/tsconfig": "workspace:*",
         "@expo/ngrok": "catalog:",
+        "bun-types": "catalog:",
         "turbo": "catalog:",
       },
       "peerDependencies": {

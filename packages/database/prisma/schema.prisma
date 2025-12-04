@@ -15,4 +15,6 @@ model User {
   updatedAt DateTime @updatedAt
   email     String   @unique
   name      String?
+
+  @@index([email, name])
 }

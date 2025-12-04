@@ -22,6 +22,9 @@
 		},
 		"lint": {
 			"cache": false
+		},
+		"migrate": {
+			"cache": false
 		}
 	}
 }

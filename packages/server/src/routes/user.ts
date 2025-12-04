@@ -18,7 +18,6 @@ export const userRoute = new Hono<HonoEnv>()
 			})
 		),
 		async (c) => {
-			await Bun.sleep(5000);
 			const { error, data } = await tryCatch(
 				c.var.db.handlers.user.getAllUsers(c.req.valid('query'), c.req.raw.signal)
 			);

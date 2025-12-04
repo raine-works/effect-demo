@@ -1,13 +1,10 @@
 import { Prisma, type PrismaClient } from '@database/generated/client';
 
-export const cancellableTransactionExtension = Prisma.defineExtension((client) => {
+export const cancellableExtension = Prisma.defineExtension((client) => {
 	return client.$extends({
-		name: 'cancellableTransaction',
+		name: 'cancellable',
 		client: {
-			async $cancellableTransaction<T>(
-				signal: AbortSignal,
-				action: (tx: Prisma.TransactionClient) => Promise<T>
-			): Promise<T> {
+			async $cancellable<T>(action: (tx: Prisma.TransactionClient) => Promise<T>, signal: AbortSignal): Promise<T> {
 				const contextClient = client as PrismaClient;
 
 				return contextClient.$transaction(async (tx) => {

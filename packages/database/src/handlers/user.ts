@@ -8,12 +8,12 @@ export const userHandler = (client: ExtendedPrismaClient) => {
 			const skip = (args.page - 1) * args.pageSize;
 			const take = skip + args.pageSize;
 			const { error, data } = await tryCatch(
-				client.$cancellableTransaction(signal, async (tx) => {
+				client.$cancellable(async (tx) => {
 					return {
 						count: await tx.user.count(),
 						records: await tx.user.findMany({ skip, take })
 					};
-				})
+				}, signal)
 			);
 
 			if (error) {
@@ -28,9 +28,9 @@ export const userHandler = (client: ExtendedPrismaClient) => {
 		},
 		createUser: async (args: Prisma.UserCreateArgs['data'], signal: AbortSignal) => {
 			const { error, data } = await tryCatch(
-				client.$cancellableTransaction(signal, async (tx) => {
+				client.$cancellable(async (tx) => {
 					return await tx.user.create({ data: { name: args.name, email: args.email } });
-				})
+				}, signal)
 			);
 
 			if (error?.code === 'P2002') {

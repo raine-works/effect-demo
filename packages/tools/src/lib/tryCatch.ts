@@ -1,4 +1,5 @@
-type ErrorCodes = 'P2002';
+/** biome-ignore-all lint/suspicious/noExplicitAny: any is needed */
+type ErrorCodes = 'P2002' | 'ABORT_ERR';
 
 export class CustomError extends Error {
 	code: ErrorCodes;
@@ -11,39 +12,34 @@ export class CustomError extends Error {
 	}
 }
 
-type Success<T> = {
-	data: T;
-	error: null;
-};
-
-type Failure<E> = {
-	data: null;
-	error: E;
-};
-
+type Success<T> = { data: T; error: null };
+type Failure<E> = { data: null; error: E };
 type Result<T, E = CustomError> = Success<T> | Failure<E>;
 
-/**
- * Property to handle try-catch in async functions.
- * Returns a Result type with either data or error.
- * @param promise The promise to handle.
- * @template T The type of the data returned on success.
- * @template E The type of the error returned on failure, defaults to Error.
- * @example
- * const result = await tryCatch(asyncFunction());
- * if (result.error) {
- *   console.error(result.error);
- * } else {
- *   console.log(result.data);
- * }
- * @see
- * @returns
- */
-export const tryCatch = async <T, E = CustomError>(promise: Promise<T>): Promise<Result<T, E>> => {
-	try {
-		const data = await promise;
-		return { data, error: null };
-	} catch (error) {
-		return { data: null, error: error as E };
+function isAsyncIterable<T>(input: any): input is AsyncIterable<T> {
+	return input != null && typeof input[Symbol.asyncIterator] === 'function';
+}
+
+export function tryCatch<T, E = CustomError>(promise: Promise<T>): Promise<Result<T, E>>;
+
+export function tryCatch<T, E = CustomError>(iterable: AsyncIterable<T>): AsyncGenerator<Result<T, E>>;
+
+export function tryCatch<T, E = CustomError>(
+	input: Promise<T> | AsyncIterable<T>
+): Promise<Result<T, E>> | AsyncGenerator<Result<T, E>> {
+	if (isAsyncIterable(input)) {
+		return (async function* () {
+			try {
+				for await (const item of input) {
+					yield { data: item, error: null };
+				}
+			} catch (error) {
+				yield { data: null, error: error as E };
+			}
+		})();
 	}
-};
+
+	return input
+		.then((data) => ({ data, error: null }) as Success<T>)
+		.catch((error) => ({ data: null, error: error as E }) as Failure<E>);
+}

@@ -1,14 +1,23 @@
 import { Prisma, PrismaClient } from '@database/generated/client';
 import { userHandler } from '@database/handlers/user';
-import { cancellableTransactionExtension } from '@database/lib/cancellableTransaction';
+import { cancellableExtension } from '@database/lib/cancellable';
+import { hooksExtension } from '@database/lib/hooks';
+import { subscribeExtension } from '@database/lib/subscribe';
 import { PrismaPg } from '@prisma/adapter-pg';
 
-const _inferenceHelper = () => (null as unknown as PrismaClient).$extends(cancellableTransactionExtension);
+const _inferenceHelper = () =>
+	(null as unknown as PrismaClient)
+		.$extends(hooksExtension)
+		.$extends(subscribeExtension)
+		.$extends(cancellableExtension);
 export type ExtendedPrismaClient = ReturnType<typeof _inferenceHelper>;
 
 export const database = (connectionString: string) => {
 	const adapter = new PrismaPg({ connectionString });
-	const client = new PrismaClient({ adapter }).$extends(cancellableTransactionExtension);
+	const client = new PrismaClient({ adapter })
+		.$extends(hooksExtension)
+		.$extends(subscribeExtension)
+		.$extends(cancellableExtension);
 
 	return {
 		client,
