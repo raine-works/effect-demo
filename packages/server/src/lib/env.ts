@@ -5,6 +5,9 @@ const envSchema = z.object({
 	LOG_LEVEL: z.enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace']).default('trace'),
 	TZ: z.string(),
 	DATABASE_URL: z.url(),
+	NATS_URL: z.url(),
+	NATS_USER: z.string(),
+	NATS_PASS: z.string(),
 	PORT: z.string().default('8080')
 });
 

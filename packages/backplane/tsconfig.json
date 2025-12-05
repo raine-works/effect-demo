@@ -1,0 +1,17 @@
+{
+	"extends": "@effect-demo/tsconfig/base.json",
+	"compilerOptions": {
+		"noEmit": false,
+		"emitDeclarationOnly": true,
+		"declarationDir": "./.types",
+		"tsBuildInfoFile": "./.types/tsconfig.tsbuildinfo",
+		"rootDir": "./src",
+		"baseUrl": ".",
+		"paths": {
+			"@backplane/*": ["../backplane/src/*"],
+			"@tools/*": ["../tools/src/*"],
+			"@server/*": ["./src/*"]
+		}
+	},
+	"include": ["./src/**/*.ts"]
+}

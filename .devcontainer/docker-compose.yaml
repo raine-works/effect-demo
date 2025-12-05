@@ -8,7 +8,7 @@ services:
       - ../..:/workspaces:cached
     network_mode: host
   
-  hub_database:
+  database:
     container_name: effect_demo_database
     image: postgres:17.6
     environment:
@@ -19,6 +19,17 @@ services:
       - 5432:5432
     volumes:
       - effect_demo_database_data:/var/lib/postgresql/data
+    networks:
+      - effect_demo_dev_network
+
+  nats:
+    container_name: effect_demo_nats
+    image: nats:latest
+    ports:
+      - 4222:4222
+      - 8222:8222
+      - 6222:6222
+    command: -DV --user effect_demo_dev_user --pass effect_demo_dev_password 
     networks:
       - effect_demo_dev_network
 

@@ -40,6 +40,7 @@
 			"react-native-svg": "15.12.1",
 			"@expo/ngrok": "4.1.0",
 			"@types/node": "24.10.1",
+			"nats": "2.29.3",
 			"prisma": "7.0.1",
 			"hono": "4.10.6",
 			"zod": "4.1.13",

@@ -1,4 +1,6 @@
+import type { backplane } from '@effect-demo/backplane';
 import type { database } from '@effect-demo/database';
+import { useBackplane } from '@server/lib/backplane';
 import { useDatabase } from '@server/lib/database';
 import { env } from '@server/lib/env';
 import { socketRoute } from '@server/routes/socket';
@@ -12,6 +14,7 @@ import { cors } from 'hono/cors';
 export type HonoEnv = {
 	Variables: {
 		db: ReturnType<typeof database>;
+		bp: Awaited<ReturnType<typeof backplane>>;
 	};
 };
 
@@ -30,7 +33,7 @@ const app = new Hono<HonoEnv>()
 	.use(compress({ encoding: 'gzip' }))
 	.get('/healthz', (c) => c.text('OK'));
 
-const api = app.use(useDatabase).basePath('/api').route('/ws', socketRoute).route('/user', userRoute);
+const api = app.use(useDatabase).use(useBackplane).basePath('/api').route('/ws', socketRoute).route('/user', userRoute);
 
 const startServer = (port: number) => {
 	console.log(`Starting server on port ${port}...`);

@@ -1,20 +1,16 @@
 {
-	"name": "@effect-demo/server",
+	"name": "@effect-demo/backplane",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
 	"types": "./.types/index.d.ts",
+	"main": "./src/index.ts",
 	"scripts": {
-		"build": "tsc",
-		"dev": "bun run --hot ./src/index.ts"
+		"build": "tsc"
 	},
 	"dependencies": {
 		"@effect-demo/tools": "workspace:*",
-		"@effect-demo/database": "workspace:*",
-		"@effect-demo/backplane": "workspace:*",
-		"@hono/zod-validator": "catalog:",
-		"hono": "catalog:",
-		"zod": "catalog:"
+		"nats": "catalog:"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",
