@@ -6,12 +6,12 @@ export const userHandler = (client: ExtendedPrismaClient) => {
 	return {
 		getAllUsers: async (args: { page: number; pageSize: number }, signal: AbortSignal) => {
 			const skip = (args.page - 1) * args.pageSize;
-			const take = skip + args.pageSize;
+			const take = args.pageSize;
 			const { error, data } = await tryCatch(
 				client.$cancellable(async (tx) => {
 					return {
 						count: await tx.user.count(),
-						records: await tx.user.findMany({ skip, take })
+						records: await tx.user.findMany({ skip, take, orderBy: { createdAt: 'desc' } })
 					};
 				}, signal)
 			);

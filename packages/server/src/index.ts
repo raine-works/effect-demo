@@ -1,7 +1,7 @@
 import type { backplane } from '@effect-demo/backplane';
 import type { database } from '@effect-demo/database';
-import { useBackplane } from '@server/lib/backplane';
-import { useDatabase } from '@server/lib/database';
+import { bp, useBackplane } from '@server/lib/backplane';
+import { db, useDatabase } from '@server/lib/database';
 import { env } from '@server/lib/env';
 import { socketRoute } from '@server/routes/socket';
 import { userRoute } from '@server/routes/user';
@@ -57,3 +57,22 @@ process.on('SIGTERM', async () => {
 type Api = typeof api;
 
 export type { Api };
+
+const testOne = async () => {
+	const stream = db.client.$subscribe('User:create');
+
+	for await (const data of stream) {
+		bp.client.publish('User:create', bp.jsonCodec.encode(data));
+	}
+};
+
+const testTwo = () => {
+	bp.client.subscribe('User:create', {
+		callback: (_err, msg) => {
+			console.log(bp.jsonCodec.decode(msg.data));
+		}
+	});
+};
+
+testOne();
+testTwo();
