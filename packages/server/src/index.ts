@@ -18,6 +18,8 @@ export type HonoEnv = {
 	};
 };
 
+const controller = new AbortController();
+
 const app = new Hono<HonoEnv>()
 	.use(
 		'/api/*',
@@ -51,6 +53,7 @@ const server = startServer(Number(env.PORT));
 process.on('SIGTERM', async () => {
 	console.log('Stopping server...');
 	await server.stop();
+	controller.abort();
 	process.exit(0);
 });
 
@@ -58,6 +61,10 @@ type Api = typeof api;
 
 export type { Api };
 
-db.client.$subscribe('User:create', (data) => {
-	bp.client.publish('User:create', bp.jsonCodec.encode(data));
-});
+db.client.$subscribe(
+	'User:create',
+	(data) => {
+		bp.client.publish('User:create', bp.jsonCodec.encode(data));
+	},
+	controller.signal
+);

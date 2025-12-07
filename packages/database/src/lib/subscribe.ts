@@ -39,12 +39,11 @@ export const subscribeExtension = Prisma.defineExtension((client) => {
 		name: 'subscribe',
 		client: {
 			async $subscribe<K extends ModelEvents>(
-				key: K,
+				eventKey: K,
 				onMessage: (data: InferPayload<K>) => void,
 				signal?: AbortSignal
 			): Promise<void> {
-				const stream = tryCatch(on(eventEmitter, key, { signal }));
-
+				const stream = tryCatch(on(eventEmitter, eventKey, { signal }));
 				for await (const { error, data } of stream) {
 					if (error) {
 						if (error.code !== 'ABORT_ERR') {
@@ -73,8 +72,8 @@ export const subscribeExtension = Prisma.defineExtension((client) => {
 					];
 
 					if ((targetOps as string[]).includes(operation)) {
-						const key = `${model}:${operation}`;
-						eventEmitter.emit(key, data);
+						const eventKey = `${model}:${operation}`;
+						eventEmitter.emit(eventKey, data);
 					}
 
 					return data;
