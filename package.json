@@ -57,7 +57,8 @@
 		"dev": "turbo dev",
 		"format": "biome format --write .",
 		"lint": "turbo lint",
-		"migrate": "turbo migrate"
+		"migrate": "turbo migrate",
+		"reset": "turbo reset"
 	},
 	"devDependencies": {
 		"@effect-demo/tsconfig": "workspace:*",

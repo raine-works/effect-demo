@@ -58,21 +58,6 @@ type Api = typeof api;
 
 export type { Api };
 
-const testOne = async () => {
-	const stream = db.client.$subscribe('User:create');
-
-	for await (const data of stream) {
-		bp.client.publish('User:create', bp.jsonCodec.encode(data));
-	}
-};
-
-const testTwo = () => {
-	bp.client.subscribe('User:create', {
-		callback: (_err, msg) => {
-			console.log(bp.jsonCodec.decode(msg.data));
-		}
-	});
-};
-
-testOne();
-testTwo();
+db.client.$subscribe('User:create', (data) => {
+	bp.client.publish('User:create', bp.jsonCodec.encode(data));
+});

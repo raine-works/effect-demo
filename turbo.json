@@ -25,6 +25,9 @@
 		},
 		"migrate": {
 			"cache": false
+		},
+		"reset": {
+			"cache": false
 		}
 	}
 }
