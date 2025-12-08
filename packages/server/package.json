@@ -12,9 +12,7 @@
 		"@effect-demo/tools": "workspace:*",
 		"@effect-demo/database": "workspace:*",
 		"@effect-demo/backplane": "workspace:*",
-		"@hono/zod-validator": "catalog:",
 		"@orpc/server": "catalog:",
-		"hono": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

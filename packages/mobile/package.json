@@ -34,8 +34,7 @@
 		"react-native-safe-area-context": "catalog:",
 		"react-native-screens": "catalog:",
 		"react-native-web": "catalog:",
-		"react-native-svg": "catalog:",
-		"hono": "catalog:"
+		"react-native-svg": "catalog:"
 	},
 	"devDependencies": {
 		"@effect-demo/tools": "workspace:*",
