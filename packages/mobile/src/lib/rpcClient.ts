@@ -1,4 +1,10 @@
-import type { Api } from '@effect-demo/server';
-import { hc } from 'hono/client';
+import type { Router } from '@effect-demo/server';
+import { createORPCClient } from '@orpc/client';
+import { RPCLink } from '@orpc/client/fetch';
+import type { RouterClient } from '@orpc/server';
 
-export const client = hc<Api>(`http://10.0.0.94:3000/`);
+const link = new RPCLink({
+	url: 'http://localhost:3000/rpc'
+});
+
+export const client: RouterClient<Router> = createORPCClient(link);

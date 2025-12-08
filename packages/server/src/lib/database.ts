@@ -1,13 +1,7 @@
 import { database } from '@effect-demo/database';
 import { env } from '@server/lib/env';
-import { createMiddleware } from 'hono/factory';
 
 export const db: ReturnType<typeof database> = database(env.DATABASE_URL);
-
-export const useDatabase = createMiddleware(async (c, next) => {
-	c.set('db', db);
-	return next();
-});
 
 process.on('SIGTERM', async () => {
 	console.log('Closing database connection...');
