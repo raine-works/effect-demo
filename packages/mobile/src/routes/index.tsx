@@ -1,4 +1,5 @@
-// import { client } from '@mobile/lib/rpcClient';
+import { tryCatch } from '@effect-demo/tools';
+import { client } from '@mobile/lib/rpcClient';
 import { useEffect, useState } from 'react';
 import { Text, View } from 'react-native';
 
@@ -7,8 +8,14 @@ export default function TabOneScreen() {
 	const [value, setValue] = useState<string | null>(null);
 
 	const getUserList = async () => {
-		// const test = await client.test1;
-		setValue('Hello World');
+		const { error, data } = await tryCatch(client.test1({ name: 'Raine' }, { signal: controller.signal }));
+
+		if (error) {
+			console.error('Error fetching user list:', error);
+			return;
+		}
+
+		setValue(data.message);
 	};
 
 	useEffect(() => {

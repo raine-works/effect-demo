@@ -1,6 +1,7 @@
 {
 	"extends": "@effect-demo/tsconfig/base.json",
 	"compilerOptions": {
+		"preserveSymlinks": true,
 		"noEmit": false,
 		"emitDeclarationOnly": true,
 		"declarationDir": "./.types",

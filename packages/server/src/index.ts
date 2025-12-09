@@ -1,9 +1,18 @@
+import { onError } from '@orpc/server';
 import { RPCHandler } from '@orpc/server/fetch';
+import { CORSPlugin } from '@orpc/server/plugins';
 import { env } from '@server/lib/env';
 import { router } from '@server/routes/test';
 import { serve } from 'bun';
 
-const handler = new RPCHandler(router, {});
+const handler = new RPCHandler(router, {
+	plugins: [new CORSPlugin()],
+	interceptors: [
+		onError((error) => {
+			console.error((error as Error).message);
+		})
+	]
+});
 
 const startServer = (port: number) => {
 	console.log(`Starting server on port ${port}...`);

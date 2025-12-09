@@ -1,6 +1,7 @@
 {
 	"extends": "@effect-demo/tsconfig/base.json",
 	"compilerOptions": {
+		"preserveSymlinks": true,
 		"module": "ESNext",
 		"target": "ES2023",
 		"esModuleInterop": true,
