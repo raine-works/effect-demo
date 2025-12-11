@@ -1,11 +1,33 @@
+import { OpenAPIGenerator } from '@orpc/openapi';
+import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { onError } from '@orpc/server';
-import { RPCHandler } from '@orpc/server/fetch';
 import { CORSPlugin } from '@orpc/server/plugins';
+import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
 import { env } from '@server/lib/env';
-import { router } from '@server/routes/test';
+import { testRouter } from '@server/routes/test';
 import { serve } from 'bun';
 
-const handler = new RPCHandler(router, {
+const router = {
+	test: testRouter
+};
+
+const generator = new OpenAPIGenerator({
+	schemaConverters: [new ZodToJsonSchemaConverter()]
+});
+
+const spec = await generator.generate(router, {
+	info: {
+		title: 'Demo API',
+		version: '1.0.0'
+	},
+	servers: [
+		{
+			url: 'http://localhost:3000/rpc'
+		}
+	]
+});
+
+const handler = new OpenAPIHandler(router, {
 	plugins: [new CORSPlugin()],
 	interceptors: [
 		onError((error) => {
@@ -20,6 +42,14 @@ const startServer = (port: number) => {
 		port,
 		development: env.NODE_ENV === 'development',
 		hostname: '0.0.0.0',
+		routes: {
+			'/openapi.json': new Response(JSON.stringify(spec, null, 2), {
+				headers: {
+					'Content-Type': 'application/json; charset=utf-8',
+					'Content-Disposition': 'inline'
+				}
+			})
+		},
 		async fetch(request: Request) {
 			const { matched, response } = await handler.handle(request, {
 				prefix: '/rpc',

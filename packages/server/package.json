@@ -13,6 +13,8 @@
 		"@effect-demo/database": "workspace:*",
 		"@effect-demo/backplane": "workspace:*",
 		"@orpc/server": "catalog:",
+		"@orpc/openapi": "catalog:",
+		"@orpc/zod": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {
