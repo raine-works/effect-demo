@@ -3,12 +3,16 @@ import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { onError } from '@orpc/server';
 import { CORSPlugin } from '@orpc/server/plugins';
 import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
+import { bp } from '@server/lib/backplane';
+import { db } from '@server/lib/database';
 import { env } from '@server/lib/env';
-import { testRouter } from '@server/routes/test';
+import { authRouter } from '@server/routes/auth';
+import { userRouter } from '@server/routes/user';
 import { serve } from 'bun';
 
 const router = {
-	test: testRouter
+	auth: authRouter,
+	user: userRouter
 };
 
 const generator = new OpenAPIGenerator({
@@ -53,7 +57,7 @@ const startServer = (port: number) => {
 		async fetch(request: Request) {
 			const { matched, response } = await handler.handle(request, {
 				prefix: '/rpc',
-				context: {}
+				context: { headers: request.headers, db, bp }
 			});
 
 			if (matched) {

@@ -15,6 +15,7 @@
 		"@orpc/server": "catalog:",
 		"@orpc/openapi": "catalog:",
 		"@orpc/zod": "catalog:",
+		"jose": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

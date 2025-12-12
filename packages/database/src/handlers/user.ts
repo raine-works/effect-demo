@@ -4,7 +4,7 @@ import { CustomError, tryCatch } from '@effect-demo/tools';
 
 export const userHandler = (client: ExtendedPrismaClient) => {
 	return {
-		getAllUsers: async (args: { page: number; pageSize: number }, signal: AbortSignal) => {
+		getAllUsers: async (args: { page: number; pageSize: number }, signal?: AbortSignal) => {
 			const skip = (args.page - 1) * args.pageSize;
 			const take = args.pageSize;
 			const { error, data } = await tryCatch(
@@ -26,7 +26,7 @@ export const userHandler = (client: ExtendedPrismaClient) => {
 				records: data.records
 			};
 		},
-		createUser: async (args: Prisma.UserCreateArgs['data'], signal: AbortSignal) => {
+		createUser: async (args: Prisma.UserCreateArgs['data'], signal?: AbortSignal) => {
 			const { error, data } = await tryCatch(
 				client.$cancellable(async (tx) => {
 					return await tx.user.create({ data: { name: args.name, email: args.email } });

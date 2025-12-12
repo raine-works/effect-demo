@@ -4,20 +4,20 @@ export const cancellableExtension = Prisma.defineExtension((client) => {
 	return client.$extends({
 		name: 'cancellable',
 		client: {
-			async $cancellable<T>(action: (tx: Prisma.TransactionClient) => Promise<T>, signal: AbortSignal): Promise<T> {
+			async $cancellable<T>(action: (tx: Prisma.TransactionClient) => Promise<T>, signal?: AbortSignal): Promise<T> {
 				const contextClient = client as PrismaClient;
 
 				return contextClient.$transaction(async (tx) => {
-					if (signal.aborted) {
+					if (signal?.aborted) {
 						throw new Error('ABORTED');
 					}
 
 					const abortPromise = new Promise<never>((_, reject) => {
 						const onAbort = () => {
-							signal.removeEventListener('abort', onAbort);
+							signal?.removeEventListener('abort', onAbort);
 							reject(new Error('ABORTED'));
 						};
-						signal.addEventListener('abort', onAbort);
+						signal?.addEventListener('abort', onAbort);
 					});
 
 					const actionPromise = action(tx).then((r) => r);

@@ -8,7 +8,8 @@ const envSchema = z.object({
 	NATS_URL: z.url(),
 	NATS_USER: z.string(),
 	NATS_PASS: z.string(),
-	PORT: z.string().default('8080')
+	PORT: z.string().default('8080'),
+	JWT_SECRET: z.string()
 });
 
 export const env = envSchema.parse(Bun.env);
