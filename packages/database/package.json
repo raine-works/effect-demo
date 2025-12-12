@@ -6,9 +6,11 @@
 	"types": "./.types/index.d.ts",
 	"main": "./src/index.ts",
 	"scripts": {
+		"build": "bunx --bun prisma generate && tsc",
+		"format": "bunx --bun prisma format",
 		"migrate": "bunx --bun prisma migrate dev --schema=./prisma/schema.prisma",
-		"build": "tsc && bunx --bun prisma generate",
-		"reset": "DATABASE_URL='postgresql://effect_demo_dev_user:effect_demo_dev_password@localhost:5432/effect_demo_dev_db?schema=public' bunx --bun prisma db push --force-reset"
+		"reset": "DATABASE_URL='postgresql://effect_demo_dev_user:effect_demo_dev_password@localhost:5432/effect_demo_dev_db?schema=public' bunx --bun prisma migrate reset",
+		"studio": "DATABASE_URL='postgresql://effect_demo_dev_user:effect_demo_dev_password@localhost:5432/effect_demo_dev_db?schema=public' bunx --bun prisma studio"
 	},
 	"dependencies": {
 		"@effect-demo/tools": "workspace:*",

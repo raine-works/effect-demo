@@ -1,4 +1,5 @@
 import { Prisma, PrismaClient } from '@database/generated/client';
+import { sessionHandler } from '@database/handlers/session';
 import { userHandler } from '@database/handlers/user';
 import { cancellableExtension } from '@database/lib/cancellable';
 import { hooksExtension } from '@database/lib/hooks';
@@ -23,7 +24,8 @@ export const database = (connectionString: string) => {
 	return {
 		client,
 		handlers: {
-			user: userHandler(client)
+			user: userHandler(client),
+			session: sessionHandler(client)
 		}
 	};
 };

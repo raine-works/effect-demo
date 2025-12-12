@@ -5,6 +5,7 @@
 	"globalEnv": ["HOME", "HOST_IP", "NODE_ENV", "TZ"],
 	"tasks": {
 		"build": {
+			"dependsOn": ["^build"],
 			"outputs": [
 				"./.types/**",
 				"./.expo/**",
@@ -27,6 +28,11 @@
 			"cache": false
 		},
 		"reset": {
+			"cache": false,
+			"persistent": true
+		},
+		"studio": {
+			"persistent": true,
 			"cache": false
 		}
 	}

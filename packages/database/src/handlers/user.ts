@@ -26,7 +26,20 @@ export const userHandler = (client: ExtendedPrismaClient) => {
 				records: data.records
 			};
 		},
-		createUser: async (args: Prisma.UserCreateArgs['data'], signal?: AbortSignal) => {
+		getUserByEmail: async (args: Pick<Prisma.UserUncheckedCreateInput, 'email'>, signal?: AbortSignal) => {
+			const { error, data } = await tryCatch(
+				client.$cancellable(async (tx) => {
+					return await tx.user.findUnique({ where: args });
+				}, signal)
+			);
+
+			if (error) {
+				throw error;
+			}
+
+			return data;
+		},
+		createUser: async (args: Pick<Prisma.UserUncheckedCreateInput, 'name' | 'email'>, signal?: AbortSignal) => {
 			const { error, data } = await tryCatch(
 				client.$cancellable(async (tx) => {
 					return await tx.user.create({ data: { name: args.name, email: args.email } });

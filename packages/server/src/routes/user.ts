@@ -4,8 +4,10 @@ import { privateProcedure } from '@server/lib/orpc';
 import { z } from 'zod';
 
 const getAllUsers = privateProcedure
-	.route({ method: 'POST', path: '/test/one', outputStructure: 'compact' })
-	.input(z.object({ page: z.number().positive().default(1), pageSize: z.number().positive().default(30) }))
+	.route({ method: 'GET', path: '/users' })
+	.input(
+		z.object({ page: z.coerce.number().positive().default(1), pageSize: z.coerce.number().positive().default(30) })
+	)
 	.output(
 		z.object({
 			page: z.number(),
