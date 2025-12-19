@@ -12,6 +12,7 @@
 		"@effect-demo/tools": "workspace:*",
 		"@effect-demo/database": "workspace:*",
 		"@effect-demo/backplane": "workspace:*",
+		"@js-temporal/polyfill": "catalog:",
 		"@orpc/server": "catalog:",
 		"@orpc/openapi": "catalog:",
 		"@orpc/zod": "catalog:",

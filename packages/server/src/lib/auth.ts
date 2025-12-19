@@ -45,7 +45,7 @@ export const authMiddleware = os.$context<Context>().middleware(async ({ context
 	const { error, data } = await tryCatch(jwtVerify<SessionJWT>(bearerToken, secret));
 
 	if (error) {
-		throw new ORPCError('UNAUTHORIZED', { message: error.message });
+		throw new ORPCError('UNAUTHORIZED', { message: 'Token expired.' });
 	}
 
 	return next({

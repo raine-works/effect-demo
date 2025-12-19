@@ -4,7 +4,7 @@
 	"version": "0.0.0",
 	"main": "expo-router/entry",
 	"scripts": {
-		"dev": "expo start --tunnel"
+		"dev": "bunx --bun expo start --tunnel"
 	},
 	"dependencies": {
 		"@babel/plugin-transform-react-jsx": "catalog:",
@@ -12,9 +12,11 @@
 		"@react-navigation/native": "catalog:",
 		"@orpc/client": "catalog:",
 		"@orpc/server": "catalog:",
+		"@orpc/contract": "catalog:",
 		"@orpc/openapi-client": "catalog:",
 		"babel-preset-expo": "catalog:",
 		"expo": "catalog:",
+		"expo-secure-store": "catalog:",
 		"expo-constants": "catalog:",
 		"expo-font": "catalog:",
 		"expo-haptics": "catalog:",
@@ -38,8 +40,8 @@
 		"react-native-svg": "catalog:"
 	},
 	"devDependencies": {
-		"@effect-demo/tools": "workspace:*",
 		"@effect-demo/server": "workspace:*",
+		"@effect-demo/tools": "workspace:*",
 		"@types/react": "catalog:",
 		"@types/node": "catalog:",
 		"bun-types": "catalog:"

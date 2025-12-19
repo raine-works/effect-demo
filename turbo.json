@@ -30,10 +30,6 @@
 		"reset": {
 			"cache": false,
 			"persistent": true
-		},
-		"studio": {
-			"persistent": true,
-			"cache": false
 		}
 	}
 }
