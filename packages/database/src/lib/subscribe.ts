@@ -1,6 +1,6 @@
 import { EventEmitter, on } from 'node:events';
 import { Prisma } from '@database/generated/client';
-import { tryCatch } from '@effect-demo/tools';
+import { tryCatch } from '@effect-demo/tools/lib/tryCatch';
 import type { Operation } from '@prisma/client/runtime/client';
 
 const eventEmitter = new EventEmitter();

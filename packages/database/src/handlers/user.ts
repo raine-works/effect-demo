@@ -1,6 +1,6 @@
 import type { Prisma } from '@database/generated/client';
 import type { ExtendedPrismaClient } from '@database/index';
-import { CustomError, tryCatch } from '@effect-demo/tools';
+import { CustomError, tryCatch } from '@effect-demo/tools/lib/tryCatch';
 
 export const userHandler = (client: ExtendedPrismaClient) => {
 	return {
@@ -26,10 +26,23 @@ export const userHandler = (client: ExtendedPrismaClient) => {
 				records: data.records
 			};
 		},
+		getUserById: async (args: Pick<Prisma.UserUncheckedCreateInput, 'id'>, signal?: AbortSignal) => {
+			const { error, data } = await tryCatch(
+				client.$cancellable(async (tx) => {
+					return await tx.user.findUnique({ where: { id: args.id } });
+				}, signal)
+			);
+
+			if (error) {
+				throw error;
+			}
+
+			return data;
+		},
 		getUserByEmail: async (args: Pick<Prisma.UserUncheckedCreateInput, 'email'>, signal?: AbortSignal) => {
 			const { error, data } = await tryCatch(
 				client.$cancellable(async (tx) => {
-					return await tx.user.findUnique({ where: args });
+					return await tx.user.findUnique({ where: { email: args.email } });
 				}, signal)
 			);
 

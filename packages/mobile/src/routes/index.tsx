@@ -1,34 +1,43 @@
-import { tryCatch } from '@effect-demo/tools';
+import { tryCatch } from '@effect-demo/tools/lib/tryCatch';
 import { client } from '@mobile/lib/rpcClient';
-import { useEffect, useState } from 'react';
-import { Text, View } from 'react-native';
+import { View } from 'react-native';
 
 export default function TabOneScreen() {
 	const controller = new AbortController();
-	const [value, setValue] = useState<string | null>(null);
 
-	const getUserList = async () => {
-		const { error, data } = await tryCatch(client.test1({ name: 'Raine' }, { signal: controller.signal }));
+	const login = async () => {
+		const { error } = await tryCatch(
+			client.auth.login({ email: 'raine@raineworks.com' }, { signal: controller.signal })
+		);
 
 		if (error) {
-			console.error('Error fetching user list:', error);
+			console.error(error);
+			return;
+		}
+	};
+
+	const getAllUsers = async () => {
+		const { error, data } = await tryCatch(
+			client.user.getAllUsers({ page: 1, pageSize: 30 }, { signal: controller.signal })
+		);
+
+		if (error) {
+			console.error(error);
 			return;
 		}
 
-		setValue(data.message);
+		console.log(data);
 	};
-
-	useEffect(() => {
-		getUserList();
-
-		return () => {
-			controller.abort();
-		};
-	}, []);
 
 	return (
 		<View>
-			<Text>{value}</Text>
+			<button type="button" onClick={login}>
+				Login
+			</button>
+
+			<button type="button" onClick={getAllUsers}>
+				Get Users
+			</button>
 		</View>
 	);
 }

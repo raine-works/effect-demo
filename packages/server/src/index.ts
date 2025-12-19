@@ -32,7 +32,13 @@ const spec = await generator.generate(router, {
 });
 
 const handler = new OpenAPIHandler(router, {
-	plugins: [new CORSPlugin()],
+	plugins: [
+		new CORSPlugin({
+			origin: 'http://localhost:8081',
+			credentials: true,
+			allowHeaders: ['Content-Type', 'Authorization']
+		})
+	],
 	interceptors: [
 		onError((error) => {
 			console.error((error as Error).message);
@@ -47,6 +53,7 @@ const startServer = (port: number) => {
 		development: env.NODE_ENV === 'development',
 		hostname: '0.0.0.0',
 		routes: {
+			'/healthz': new Response('OK', { status: 200 }),
 			'/openapi.json': new Response(JSON.stringify(spec, null, 2), {
 				headers: {
 					'Content-Type': 'application/json; charset=utf-8',

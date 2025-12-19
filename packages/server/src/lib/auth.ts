@@ -1,32 +1,54 @@
-import { tryCatch } from '@effect-demo/tools';
+import { tryCatch } from '@effect-demo/tools/lib/tryCatch';
 import { ORPCError, os } from '@orpc/server';
 import { env } from '@server/lib/env';
 import type { Context } from '@server/lib/orpc';
-import { jwtVerify } from 'jose';
+import { jwtVerify, SignJWT } from 'jose';
+
+export type SessionJWT = {
+	sub: string;
+	type: 'access';
+	user: NonNullable<Context['user']>;
+	session: NonNullable<Context['session']>;
+};
+export type RefreshJWT = { sub: string; type: 'refresh'; sessionId: string };
 
 const secret = new TextEncoder().encode(env.JWT_SECRET);
+const alg = 'HS256';
 
-export type User = {
-	email: string;
+export const generateAccessToken = async (
+	user: NonNullable<Context['user']>,
+	session: NonNullable<Context['session']>
+) => {
+	return await new SignJWT({ sub: user.id, type: 'access', user, session } satisfies SessionJWT)
+		.setProtectedHeader({ alg })
+		.setIssuedAt()
+		.setExpirationTime('10m')
+		.sign(secret);
 };
 
-export type Session = {
-	expires: Date;
+export const generateRefreshToken = async (userId: string, sessionId: string) => {
+	return await new SignJWT({ sub: userId, type: 'refresh', sessionId } satisfies RefreshJWT)
+		.setProtectedHeader({ alg })
+		.setIssuedAt()
+		.setExpirationTime('7d')
+		.setJti(Bun.randomUUIDv7())
+		.sign(secret);
 };
 
 export const authMiddleware = os.$context<Context>().middleware(async ({ context, next }) => {
-	const authHeader = context.headers.get('Authorization');
-	const token = authHeader?.split(' ')[1];
+	const bearerToken = context.headers.get('Authorization')?.split(' ')[1];
 
-	if (!token) {
+	if (!bearerToken) {
 		throw new ORPCError('UNAUTHORIZED');
 	}
 
-	const { error, data } = await tryCatch(jwtVerify<Context['auth']>(token, secret));
+	const { error, data } = await tryCatch(jwtVerify<SessionJWT>(bearerToken, secret));
 
 	if (error) {
-		throw new ORPCError('UNAUTHORIZED');
+		throw new ORPCError('UNAUTHORIZED', { message: error.message });
 	}
 
-	return next({ context: { auth: data.payload } as Context });
+	return next({
+		context: { user: data.payload.user, session: data.payload.session } as Context
+	});
 });

@@ -12,6 +12,7 @@
 		"@react-navigation/native": "catalog:",
 		"@orpc/client": "catalog:",
 		"@orpc/server": "catalog:",
+		"@orpc/openapi-client": "catalog:",
 		"babel-preset-expo": "catalog:",
 		"expo": "catalog:",
 		"expo-constants": "catalog:",

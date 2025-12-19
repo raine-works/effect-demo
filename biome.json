@@ -43,6 +43,9 @@
 				"useExhaustiveDependencies": "off",
 				"noChildrenProp": "off"
 			},
+			"complexity": {
+				"noBannedTypes": "off"
+			},
 			"suspicious": { "noArrayIndexKey": "off" },
 			"security": { "noDangerouslySetInnerHtml": "off" }
 		}

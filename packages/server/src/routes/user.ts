@@ -1,10 +1,9 @@
-import { tryCatch } from '@effect-demo/tools';
+import { tryCatch } from '@effect-demo/tools/lib/tryCatch';
 import { ORPCError } from '@orpc/server';
 import { privateProcedure } from '@server/lib/orpc';
 import { z } from 'zod';
 
 const getAllUsers = privateProcedure
-	.route({ method: 'GET', path: '/users' })
 	.input(
 		z.object({ page: z.coerce.number().positive().default(1), pageSize: z.coerce.number().positive().default(30) })
 	)
