@@ -23,6 +23,7 @@ const router = base.router({
 });
 
 const contract = minifyContractRouter(router);
+const allowedOrigins = ['http://localhost:8081'];
 
 const spec = await generator.generate(router, {
 	info: {
@@ -39,7 +40,7 @@ const spec = await generator.generate(router, {
 const handler = new OpenAPIHandler(router, {
 	plugins: [
 		new CORSPlugin({
-			origin: 'http://localhost:8081',
+			origin: allowedOrigins,
 			credentials: true,
 			allowHeaders: ['Content-Type', 'Authorization']
 		})
@@ -58,20 +59,7 @@ const startServer = (port: number) => {
 		development: env.NODE_ENV === 'development',
 		hostname: '0.0.0.0',
 		routes: {
-			'/healthz': new Response('OK', { status: 200 }),
-			'/openapi.json': new Response(JSON.stringify(spec, null, 2), {
-				headers: {
-					'Content-Type': 'application/json; charset=utf-8',
-					'Content-Disposition': 'inline'
-				}
-			}),
-			'/contract.json': new Response(JSON.stringify(contract, null, 2), {
-				headers: {
-					'Access-Control-Allow-Origin': '*',
-					'Content-Type': 'application/json; charset=utf-8',
-					'Content-Disposition': 'inline'
-				}
-			})
+			'/healthz': new Response('OK', { status: 200 })
 		},
 		async fetch(request: Request) {
 			const { matched, response } = await handler.handle(request, {
@@ -81,6 +69,43 @@ const startServer = (port: number) => {
 
 			if (matched) {
 				return response;
+			}
+
+			const url = new URL(request.url);
+
+			/**
+			 * OPEN API SPEC
+			 */
+			if (url.pathname === '/openapi.json') {
+				return new Response(JSON.stringify(spec, null, 2), {
+					status: 200,
+					headers: {
+						'Content-Type': 'application/json; charset=utf-8',
+						'Content-Disposition': 'inline'
+					}
+				});
+			}
+
+			/**
+			 * CONTRACT ROUTER JSON
+			 */
+			if (url.pathname === '/contract.json') {
+				const origin = request.headers.get('Origin');
+				const isAllowed = origin && allowedOrigins.includes(origin);
+				const headers = new Headers({
+					'Content-Type': 'application/json; charset=utf-8',
+					'Content-Disposition': 'inline',
+					Vary: 'Origin'
+				});
+
+				if (isAllowed) {
+					headers.set('Access-Control-Allow-Origin', origin);
+				}
+
+				return new Response(JSON.stringify(contract, null, 2), {
+					status: 200,
+					headers: headers
+				});
 			}
 
 			return new Response('Not found', { status: 404 });
