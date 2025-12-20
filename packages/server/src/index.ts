@@ -1,4 +1,5 @@
 import { Temporal } from '@js-temporal/polyfill';
+import { minifyContractRouter } from '@orpc/contract';
 import { OpenAPIGenerator } from '@orpc/openapi';
 import { OpenAPIHandler } from '@orpc/openapi/fetch';
 import { onError } from '@orpc/server';
@@ -7,14 +8,23 @@ import { ZodToJsonSchemaConverter } from '@orpc/zod/zod4';
 import { bp } from '@server/lib/backplane';
 import { db } from '@server/lib/database';
 import { env } from '@server/lib/env';
-import { contract } from '@server/routes';
+import { base } from '@server/lib/orpc';
+import { authContract } from '@server/routes/auth';
+import { userContract } from '@server/routes/user';
 import { serve } from 'bun';
 
 const generator = new OpenAPIGenerator({
 	schemaConverters: [new ZodToJsonSchemaConverter()]
 });
 
-const spec = await generator.generate(contract, {
+const router = base.router({
+	auth: authContract,
+	user: userContract
+});
+
+const contract = minifyContractRouter(router);
+
+const spec = await generator.generate(router, {
 	info: {
 		title: 'Demo API',
 		version: '1.0.0'
@@ -26,7 +36,7 @@ const spec = await generator.generate(contract, {
 	]
 });
 
-const handler = new OpenAPIHandler(contract, {
+const handler = new OpenAPIHandler(router, {
 	plugins: [
 		new CORSPlugin({
 			origin: 'http://localhost:8081',
@@ -54,6 +64,13 @@ const startServer = (port: number) => {
 					'Content-Type': 'application/json; charset=utf-8',
 					'Content-Disposition': 'inline'
 				}
+			}),
+			'/contract.json': new Response(JSON.stringify(contract, null, 2), {
+				headers: {
+					'Access-Control-Allow-Origin': '*',
+					'Content-Type': 'application/json; charset=utf-8',
+					'Content-Disposition': 'inline'
+				}
 			})
 		},
 		async fetch(request: Request) {
@@ -78,3 +95,5 @@ process.on('SIGTERM', async () => {
 	await server.stop();
 	process.exit(0);
 });
+
+export type Router = typeof router;

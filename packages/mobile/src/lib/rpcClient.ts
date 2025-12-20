@@ -1,66 +1,87 @@
+import type { Router } from '@effect-demo/server';
+import { tryCatch } from '@effect-demo/tools/lib/tryCatch';
+import { storage } from '@mobile/lib/localStorage';
 import { createORPCClient } from '@orpc/client';
 import type { ContractRouterClient } from '@orpc/contract';
 import type { JsonifiedClient } from '@orpc/openapi-client';
 import { OpenAPILink } from '@orpc/openapi-client/fetch';
-import { contract } from '@server/routes/index';
-import * as SecureStore from 'expo-secure-store';
-import { Platform } from 'react-native';
 
-const link = new OpenAPILink(contract, {
-	url: 'http://localhost:3000/rpc',
-	async fetch(request, init) {
-		const { fetch } = await import('expo/fetch');
+const SERVER_URL = 'http://localhost:3000';
 
-		// 1. Get the Access Token from storage
-		const accessToken = await getToken('accessToken');
+export const rpcClient = async () => {
+	let router: Router | null = null;
+	const contractRouter = await storage.session.get('contractRouter');
 
-		// 2. Clone headers and inject Bearer token
-		const headers = new Headers(request.headers);
-		if (accessToken) {
-			headers.set('Authorization', `Bearer ${accessToken}`);
+	if (contractRouter) {
+		router = JSON.parse(contractRouter);
+	}
+
+	if (!router) {
+		const { error, data } = await tryCatch(fetch(`${SERVER_URL}/contract.json`));
+
+		if (error || !data) {
+			console.log(error.message);
+			throw new Error('Cannot find contract.json');
 		}
 
-		// 3. Make the initial request
-		let response = await fetch(request.url, {
-			body: await request.blob(),
-			headers: headers,
-			method: request.method,
-			signal: request.signal,
-			...init
-		});
+		router = (await data.json()) as Router;
+		await storage.session.set('contractRouter', JSON.stringify(router));
+	}
 
-		// 4. Handle 401 Unauthorized (Token expired)
-		if (response.status === 401) {
-			const refreshToken = await getToken('refreshToken');
+	const link = new OpenAPILink(router, {
+		url: `${SERVER_URL}/rpc`,
+		async fetch(request, init) {
+			const { fetch } = await import('expo/fetch');
 
-			if (refreshToken) {
-				// Attempt to get a new access token
-				const newAccessToken = await refreshAuthTokens(refreshToken);
+			const accessToken = await storage.local.get('accessToken');
 
-				if (newAccessToken) {
-					// Retry the original request with the new token
-					headers.set('Authorization', `Bearer ${newAccessToken}`);
-					response = await fetch(request.url, {
-						body: await request.blob(),
-						headers: headers,
-						method: request.method,
-						signal: request.signal,
-						...init
-					});
+			const headers = new Headers(request.headers);
+			if (accessToken) {
+				headers.set('Authorization', `Bearer ${accessToken}`);
+			}
+
+			const isGetOrHead = ['GET', 'HEAD'].includes(request.method.toUpperCase());
+
+			let response = await fetch(request.url, {
+				body: isGetOrHead ? undefined : await request.blob(),
+				headers: headers,
+				method: request.method,
+				signal: request.signal,
+				...init
+			});
+
+			if (response.status === 401) {
+				const refreshToken = await storage.local.get('refreshToken');
+
+				if (refreshToken) {
+					const newAccessToken = await refreshAuthTokens(refreshToken);
+
+					if (newAccessToken) {
+						headers.set('Authorization', `Bearer ${newAccessToken}`);
+						response = await fetch(request.url, {
+							body: isGetOrHead ? undefined : await request.blob(),
+							headers: headers,
+							method: request.method,
+							signal: request.signal,
+							...init
+						});
+					}
 				}
 			}
-		}
 
-		return response;
-	}
-});
+			return response;
+		}
+	});
+
+	return createORPCClient<JsonifiedClient<ContractRouterClient<Router>>>(link);
+};
 
 /**
- * Helper to call your backend refresh endpoint
+ * Helper to call your backend refresh endpoint.
  */
 const refreshAuthTokens = async (refreshToken: string): Promise<string | null> => {
 	try {
-		const response = await fetch('http://localhost:3000/rpc/auth/refresh', {
+		const response = await fetch(`${SERVER_URL}/rpc/auth/refresh`, {
 			method: 'POST',
 			headers: { 'Content-Type': 'application/json' },
 			body: JSON.stringify({ refreshToken })
@@ -68,47 +89,14 @@ const refreshAuthTokens = async (refreshToken: string): Promise<string | null> =
 
 		const data = await response.json();
 		if (data.accessToken) {
-			await setToken('accessToken', data.accessToken);
+			await storage.local.set('accessToken', data.accessToken);
 			return data.accessToken;
 		}
 	} catch (e) {
 		console.error('Refresh failed', e);
 	}
 
-	// If refresh fails, log the user out
-	await deleteToken('accessToken');
-	await deleteToken('refreshToken');
+	await storage.local.delete('accessToken');
+	await storage.local.delete('refreshToken');
 	return null;
 };
-
-/**
- * Get secure storage
- */
-const getToken = async (key: string) => {
-	if (Platform.OS === 'web') {
-		return localStorage.getItem(key);
-	}
-	return await SecureStore.getItemAsync(key);
-};
-
-/**
- * Set secure storage
- */
-const setToken = async (key: string, value: string) => {
-	if (Platform.OS === 'web') {
-		return localStorage.setItem(key, value);
-	}
-	return await SecureStore.setItemAsync(key, value);
-};
-
-/**
- * Delete secure storage
- */
-const deleteToken = async (key: string) => {
-	if (Platform.OS === 'web') {
-		return localStorage.removeItem(key);
-	}
-	return await SecureStore.deleteItemAsync(key);
-};
-
-export const client: JsonifiedClient<ContractRouterClient<typeof contract>> = createORPCClient(link);

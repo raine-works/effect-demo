@@ -15,6 +15,7 @@
 		"@js-temporal/polyfill": "catalog:",
 		"@orpc/server": "catalog:",
 		"@orpc/openapi": "catalog:",
+		"@orpc/contract": "catalog:",
 		"@orpc/zod": "catalog:",
 		"jose": "catalog:",
 		"zod": "catalog:"

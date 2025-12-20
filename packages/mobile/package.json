@@ -37,14 +37,14 @@
 		"react-native-safe-area-context": "catalog:",
 		"react-native-screens": "catalog:",
 		"react-native-web": "catalog:",
-		"react-native-svg": "catalog:"
+		"react-native-svg": "catalog:",
+		"zod": "catalog:"
 	},
 	"devDependencies": {
 		"@effect-demo/server": "workspace:*",
 		"@effect-demo/tools": "workspace:*",
 		"@types/react": "catalog:",
-		"@types/node": "catalog:",
-		"bun-types": "catalog:"
+		"@types/node": "catalog:"
 	},
 	"peerDependencies": {
 		"typescript": "catalog:"

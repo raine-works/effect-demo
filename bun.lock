@@ -84,13 +84,13 @@
         "react-native-svg": "catalog:",
         "react-native-web": "catalog:",
         "react-native-worklets": "catalog:",
+        "zod": "catalog:",
       },
       "devDependencies": {
         "@effect-demo/server": "workspace:*",
         "@effect-demo/tools": "workspace:*",
         "@types/node": "catalog:",
         "@types/react": "catalog:",
-        "bun-types": "catalog:",
       },
       "peerDependencies": {
         "typescript": "catalog:",
@@ -104,6 +104,7 @@
         "@effect-demo/database": "workspace:*",
         "@effect-demo/tools": "workspace:*",
         "@js-temporal/polyfill": "catalog:",
+        "@orpc/contract": "catalog:",
         "@orpc/openapi": "catalog:",
         "@orpc/server": "catalog:",
         "@orpc/zod": "catalog:",
