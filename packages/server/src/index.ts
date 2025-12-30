@@ -54,6 +54,11 @@ const handler = new OpenAPIHandler(router, {
 
 const startServer = (port: number) => {
 	console.log(`Starting server on port ${port}...`);
+
+	db.client.$subscribe('User:create', (data) => {
+		bp.broadcast.$publish(data);
+	});
+
 	return serve({
 		port,
 		development: env.NODE_ENV === 'development',

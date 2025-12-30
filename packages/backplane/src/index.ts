@@ -18,13 +18,20 @@ export const backplane = async (args: { servers: ConnectionOptions['servers']; u
 			$publish: (msg: object) => {
 				return client.publish('global:event', jsonCodec.encode(msg));
 			},
-			$subscribe: (fn: (err: NatsError | null, decodedMsg: object) => void) => {
+			$subscribe: <T>(fn: (err: NatsError | null, decodedMsg: T) => void) => {
 				return client.subscribe('global:event', {
 					callback: (err, msg) => {
-						const decodedMsg = jsonCodec.decode(msg.data) as object;
+						const decodedMsg = jsonCodec.decode(msg.data) as T;
 						return fn(err, decodedMsg);
 					}
 				});
+			},
+			$stream: async function* <T>() {
+				const sub = client.subscribe('global:event');
+				for await (const msg of sub) {
+					const decodedMsg = jsonCodec.decode(msg.data) as T;
+					yield decodedMsg;
+				}
 			}
 		}
 	};
