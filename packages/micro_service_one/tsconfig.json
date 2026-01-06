@@ -8,10 +8,9 @@
 		"rootDir": "./src",
 		"baseUrl": ".",
 		"paths": {
-			"@proto/*": ["../../proto/*"],
 			"@database/*": ["../database/src/*"],
 			"@tools/*": ["../tools/src/*"],
-			"@server/*": ["./src/*"]
+			"@micro_service_one/*": ["./src/*"]
 		}
 	},
 	"include": ["./src/**/*.ts"],

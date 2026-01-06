@@ -1,5 +1,5 @@
 {
-	"name": "@effect-demo/server",
+	"name": "@effect-demo/micro-service-one",
 	"private": true,
 	"version": "0.0.0",
 	"type": "module",
@@ -15,11 +15,6 @@
 		"@js-temporal/polyfill": "catalog:",
 		"@connectrpc/connect": "catalog:",
 		"@connectrpc/connect-node": "catalog:",
-		"@orpc/server": "catalog:",
-		"@orpc/openapi": "catalog:",
-		"@orpc/contract": "catalog:",
-		"@orpc/zod": "catalog:",
-		"jose": "catalog:",
 		"zod": "catalog:"
 	},
 	"devDependencies": {

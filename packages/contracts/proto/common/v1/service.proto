@@ -1,0 +1,22 @@
+syntax = "proto3";
+
+package common.v1;
+
+// DoThing provides mathematical utility functions for internal services.
+service DoThingService {
+  // MultiplyByTwo takes a double-precision number and returns its double.
+  // Use this for simple scaling operations across microservices.
+  rpc MultiplyByTwo (ThingRequest) returns (ThingResponse);
+}
+
+// The request message containing the numeric value to be processed.
+message ThingRequest {
+  // The input number (supports decimals).
+  double value = 1;
+}
+
+// The response message containing the calculated result.
+message ThingResponse {
+  // The result of the multiplication.
+  double value = 1;
+}

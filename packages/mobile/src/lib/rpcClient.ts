@@ -7,6 +7,7 @@ import type { JsonifiedClient } from '@orpc/openapi-client';
 import { OpenAPILink } from '@orpc/openapi-client/fetch';
 
 const SERVER_URL = 'http://localhost:3000';
+const REQUEST_TIMEOUT_MS = 15000;
 
 export const rpcClient = async () => {
 	let router: Router | null = null;
@@ -20,7 +21,7 @@ export const rpcClient = async () => {
 		const { error, data } = await tryCatch(fetch(`${SERVER_URL}/contract.json`));
 
 		if (error || !data) {
-			console.log(error.message);
+			console.log(error?.message);
 			throw new Error('Cannot find contract.json');
 		}
 
@@ -33,43 +34,75 @@ export const rpcClient = async () => {
 		async fetch(request, init) {
 			const { fetch } = await import('expo/fetch');
 
-			const accessToken = await storage.local.get('accessToken');
+			// 1. Setup Timeout Controller
+			const timeoutController = new AbortController();
+			const timeoutId = setTimeout(() => {
+				timeoutController.abort(new Error('RPC_TIMEOUT'));
+			}, REQUEST_TIMEOUT_MS);
 
-			const headers = new Headers(request.headers);
-			if (accessToken) {
-				headers.set('Authorization', `Bearer ${accessToken}`);
+			const requestInit = init as RequestInit;
+			let signal = timeoutController.signal;
+
+			if (requestInit?.signal && 'any' in AbortSignal) {
+				signal = (AbortSignal as any).any([timeoutController.signal, requestInit.signal]);
 			}
 
-			const isGetOrHead = ['GET', 'HEAD'].includes(request.method.toUpperCase());
+			try {
+				const accessToken = await storage.local.get('accessToken');
+				const headers = new Headers(request.headers);
+				if (accessToken) {
+					headers.set('Authorization', `Bearer ${accessToken}`);
+				}
 
-			let response = await fetch(request.url, {
-				body: isGetOrHead ? undefined : await request.blob(),
-				headers: headers,
-				method: request.method,
-				signal: request.signal,
-				...init
-			});
+				const isGetOrHead = ['GET', 'HEAD'].includes(request.method.toUpperCase());
 
-			if (response.status === 401) {
-				const refreshToken = await storage.local.get('refreshToken');
+				// IMPORTANT: Consume the body ONCE here so we can reuse it for the retry
+				const body = isGetOrHead ? undefined : await request.blob();
 
-				if (refreshToken) {
-					const newAccessToken = await refreshAuthTokens(refreshToken);
+				// First Attempt
+				let response = await fetch(request.url, {
+					body,
+					headers,
+					method: request.method,
+					signal: signal,
+					...init
+				});
 
-					if (newAccessToken) {
-						headers.set('Authorization', `Bearer ${newAccessToken}`);
-						response = await fetch(request.url, {
-							body: isGetOrHead ? undefined : await request.blob(),
-							headers: headers,
-							method: request.method,
-							signal: request.signal,
-							...init
-						});
+				// 2. Handle 401 Refresh & Retry Logic
+				if (response.status === 401) {
+					const refreshToken = await storage.local.get('refreshToken');
+
+					if (refreshToken) {
+						// Attempt to get a new access token
+						const newAccessToken = await refreshAuthTokens(refreshToken);
+
+						if (newAccessToken) {
+							// Update the headers with the new token
+							const retryHeaders = new Headers(headers);
+							retryHeaders.set('Authorization', `Bearer ${newAccessToken}`);
+
+							// Perform the Retry
+							// We use the 'body' variable we saved earlier
+							response = await fetch(request.url, {
+								body,
+								headers: retryHeaders,
+								method: request.method,
+								signal: signal,
+								...init
+							});
+						}
 					}
 				}
-			}
 
-			return response;
+				return response;
+			} catch (err: any) {
+				if (signal.aborted) {
+					console.error('Request Aborted. Reason:', signal.reason);
+				}
+				throw err;
+			} finally {
+				clearTimeout(timeoutId);
+			}
 		}
 	});
 
@@ -87,6 +120,8 @@ const refreshAuthTokens = async (refreshToken: string): Promise<string | null> =
 			body: JSON.stringify({ refreshToken })
 		});
 
+		if (!response.ok) throw new Error('Refresh request failed');
+
 		const data = await response.json();
 		if (data.accessToken) {
 			await storage.local.set('accessToken', data.accessToken);
@@ -96,6 +131,7 @@ const refreshAuthTokens = async (refreshToken: string): Promise<string | null> =
 		console.error('Refresh failed', e);
 	}
 
+	// If refresh fails, clear everything so the user is forced to log in again
 	await storage.local.delete('accessToken');
 	await storage.local.delete('refreshToken');
 	return null;

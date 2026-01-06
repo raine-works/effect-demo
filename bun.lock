@@ -31,6 +31,16 @@
         "typescript": "catalog:",
       },
     },
+    "packages/contracts": {
+      "name": "@effect-demo/contracts",
+      "version": "0.0.0",
+      "dependencies": {
+        "@bufbuild/protobuf": "catalog:",
+      },
+      "devDependencies": {
+        "@bufbuild/protoc-gen-es": "catalog:",
+      },
+    },
     "packages/database": {
       "name": "@effect-demo/database",
       "version": "0.0.0",
@@ -44,6 +54,28 @@
         "@types/node": "catalog:",
         "bun-types": "catalog:",
         "prisma": "catalog:",
+      },
+      "peerDependencies": {
+        "typescript": "catalog:",
+      },
+    },
+    "packages/micro_service_one": {
+      "name": "@effect-demo/micro-service-one",
+      "version": "0.0.0",
+      "dependencies": {
+        "@connectrpc/connect": "catalog:",
+        "@connectrpc/connect-node": "catalog:",
+        "@effect-demo/backplane": "workspace:*",
+        "@effect-demo/database": "workspace:*",
+        "@effect-demo/tools": "workspace:*",
+        "@js-temporal/polyfill": "catalog:",
+        "zod": "catalog:",
+      },
+      "devDependencies": {
+        "@effect-demo/contracts": "workspace:*",
+        "@effect-demo/tsconfig": "workspace:*",
+        "@types/node": "catalog:",
+        "bun-types": "catalog:",
       },
       "peerDependencies": {
         "typescript": "catalog:",
@@ -100,6 +132,8 @@
       "name": "@effect-demo/server",
       "version": "0.0.0",
       "dependencies": {
+        "@connectrpc/connect": "catalog:",
+        "@connectrpc/connect-node": "catalog:",
         "@effect-demo/backplane": "workspace:*",
         "@effect-demo/database": "workspace:*",
         "@effect-demo/tools": "workspace:*",
@@ -112,6 +146,7 @@
         "zod": "catalog:",
       },
       "devDependencies": {
+        "@effect-demo/contracts": "workspace:*",
         "@effect-demo/tsconfig": "workspace:*",
         "@types/node": "catalog:",
         "bun-types": "catalog:",
@@ -139,6 +174,10 @@
   "catalog": {
     "@babel/plugin-transform-react-jsx": "7.27.1",
     "@biomejs/biome": "2.3.2",
+    "@bufbuild/protobuf": "2.10.2",
+    "@bufbuild/protoc-gen-es": "2.10.2",
+    "@connectrpc/connect": "2.1.1",
+    "@connectrpc/connect-node": "2.1.1",
     "@expo/ngrok": "4.1.0",
     "@expo/vector-icons": "15.0.3",
     "@js-temporal/polyfill": "0.5.1",
@@ -395,6 +434,12 @@
 
     "@biomejs/cli-win32-x64": ["@biomejs/cli-win32-x64@2.3.2", "", { "os": "win32", "cpu": "x64" }, "sha512-6Ee9P26DTb4D8sN9nXxgbi9Dw5vSOfH98M7UlmkjKB2vtUbrRqCbZiNfryGiwnPIpd6YUoTl7rLVD2/x1CyEHQ=="],
 
+    "@bufbuild/protobuf": ["@bufbuild/protobuf@2.10.2", "", {}, "sha512-uFsRXwIGyu+r6AMdz+XijIIZJYpoWeYzILt5yZ2d3mCjQrWUTVpVD9WL/jZAbvp+Ed04rOhrsk7FiTcEDseB5A=="],
+
+    "@bufbuild/protoc-gen-es": ["@bufbuild/protoc-gen-es@2.10.2", "", { "dependencies": { "@bufbuild/protobuf": "2.10.2", "@bufbuild/protoplugin": "2.10.2" }, "bin": { "protoc-gen-es": "bin/protoc-gen-es" } }, "sha512-vbjPsuofbtZwZXuOP7Y16CQsxrwCjuRONffmJSBEhoC7PQu/Cabp0+Fu/poLPm9CNM0tDCQA0xvgobgudaEYxQ=="],
+
+    "@bufbuild/protoplugin": ["@bufbuild/protoplugin@2.10.2", "", { "dependencies": { "@bufbuild/protobuf": "2.10.2", "@typescript/vfs": "^1.6.2", "typescript": "5.4.5" } }, "sha512-RAWVs9tCzRqSS3tUtaFhOcauOAazCrm7tlGh0WHFq/44n5Fj6YgefdlZEPIaAK6VAA+FdOoFgtOJK2Ji5U24pw=="],
+
     "@chevrotain/cst-dts-gen": ["@chevrotain/cst-dts-gen@10.5.0", "", { "dependencies": { "@chevrotain/gast": "10.5.0", "@chevrotain/types": "10.5.0", "lodash": "4.17.21" } }, "sha512-lhmC/FyqQ2o7pGK4Om+hzuDrm9rhFYIJ/AXoQBeongmn870Xeb0L6oGEiuR8nohFNL5sMaQEJWCxr1oIVIVXrw=="],
 
     "@chevrotain/gast": ["@chevrotain/gast@10.5.0", "", { "dependencies": { "@chevrotain/types": "10.5.0", "lodash": "4.17.21" } }, "sha512-pXdMJ9XeDAbgOWKuD1Fldz4ieCs6+nLNmyVhe2gZVqoO7v8HXuHYs5OV2EzUtbuai37TlOAQHrTDvxMnvMJz3A=="],
@@ -403,9 +448,17 @@
 
     "@chevrotain/utils": ["@chevrotain/utils@10.5.0", "", {}, "sha512-hBzuU5+JjB2cqNZyszkDHZgOSrUUT8V3dhgRl8Q9Gp6dAj/H5+KILGjbhDpc3Iy9qmqlm/akuOI2ut9VUtzJxQ=="],
 
+    "@connectrpc/connect": ["@connectrpc/connect@2.1.1", "", { "peerDependencies": { "@bufbuild/protobuf": "^2.7.0" } }, "sha512-JzhkaTvM73m2K1URT6tv53k2RwngSmCXLZJgK580qNQOXRzZRR/BCMfZw3h+90JpnG6XksP5bYT+cz0rpUzUWQ=="],
+
+    "@connectrpc/connect-node": ["@connectrpc/connect-node@2.1.1", "", { "peerDependencies": { "@bufbuild/protobuf": "^2.7.0", "@connectrpc/connect": "2.1.1" } }, "sha512-s3TfsI1XF+n+1z6MBS9rTnFsxxR4Rw5wmdEnkQINli81ESGxcsfaEet8duzq8LVuuCupmhUsgpRo0Nv9pZkufg=="],
+
     "@effect-demo/backplane": ["@effect-demo/backplane@workspace:packages/backplane"],
 
+    "@effect-demo/contracts": ["@effect-demo/contracts@workspace:packages/contracts"],
+
     "@effect-demo/database": ["@effect-demo/database@workspace:packages/database"],
+
+    "@effect-demo/micro-service-one": ["@effect-demo/micro-service-one@workspace:packages/micro_service_one"],
 
     "@effect-demo/mobile": ["@effect-demo/mobile@workspace:packages/mobile"],
 
@@ -720,6 +773,8 @@
     "@types/yargs": ["@types/yargs@17.0.35", "", { "dependencies": { "@types/yargs-parser": "*" } }, "sha512-qUHkeCyQFxMXg79wQfTtfndEC+N9ZZg76HJftDJp+qH2tV7Gj4OJi7l+PiWwJ+pWtW8GwSmqsDj/oymhrTWXjg=="],
 
     "@types/yargs-parser": ["@types/yargs-parser@21.0.3", "", {}, "sha512-I4q9QU9MQv4oEOz4tAHJtNz1cwuLxn2F3xcc2iV5WdqLPpUnj30aUuxt1mAxYTG+oe8CZMV/+6rU4S4gRDzqtQ=="],
+
+    "@typescript/vfs": ["@typescript/vfs@1.6.2", "", { "dependencies": { "debug": "^4.1.1" }, "peerDependencies": { "typescript": "*" } }, "sha512-hoBwJwcbKHmvd2QVebiytN1aELvpk9B74B4L1mFm/XT1Q/VOYAWl2vQ9AWRFtQq8zmz6enTpfTV8WRc4ATjW/g=="],
 
     "@ungap/structured-clone": ["@ungap/structured-clone@1.3.0", "", {}, "sha512-WmoN8qaIAo7WTYWbAZuG8PYEhn5fkz7dZrqTBZ7dtt//lL2Gwms1IcnQ5yHqjDfX8Ft5j4YzDM23f87zBfDe9g=="],
 
@@ -1814,6 +1869,8 @@
     "@babel/highlight/chalk": ["chalk@2.4.2", "", { "dependencies": { "ansi-styles": "^3.2.1", "escape-string-regexp": "^1.0.5", "supports-color": "^5.3.0" } }, "sha512-Mti+f9lpJNcwF4tWV8/OrTTtF1gZi+f8FqlyAdouralcFWFQWF2+NgCHShjkCb+IFBLq9buZwE1xckQU4peSuQ=="],
 
     "@babel/plugin-transform-runtime/semver": ["semver@6.3.1", "", { "bin": { "semver": "bin/semver.js" } }, "sha512-BR7VvDCVHO+q2xBEWskxS6DJE1qRnb7DxzUrogb71CWoSficBxYsiAGd+Kl0mmq/MprG9yArRkyrQxTO6XjMzA=="],
+
+    "@bufbuild/protoplugin/typescript": ["typescript@5.4.5", "", { "bin": { "tsc": "bin/tsc", "tsserver": "bin/tsserver" } }, "sha512-vcI4UpRgg81oIRUFwR0WSIHKt11nJ7SAVlYNIu+QpqeyXP+gpQJy/Z4+F0aGxSE4MqwjyXvW/TzgkLAx2AGHwQ=="],
 
     "@expo/cli/glob": ["glob@13.0.0", "", { "dependencies": { "minimatch": "^10.1.1", "minipass": "^7.1.2", "path-scurry": "^2.0.0" } }, "sha512-tvZgpqk6fz4BaNZ66ZsRaZnbHvP/jG3uKJvAZOwEVUL4RTA5nJeeLYfyN9/VA8NX/V3IBG+hkeuGpKjvELkVhA=="],
 

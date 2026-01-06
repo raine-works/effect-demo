@@ -9,8 +9,9 @@ import { bp } from '@server/lib/backplane';
 import { db } from '@server/lib/database';
 import { env } from '@server/lib/env';
 import { base } from '@server/lib/orpc';
-import { authContract } from '@server/routes/auth';
-import { userContract } from '@server/routes/user';
+import { authRouter } from '@server/routes/auth';
+import { mathRouter } from '@server/routes/math';
+import { userRouter } from '@server/routes/user';
 import { serve } from 'bun';
 
 const generator = new OpenAPIGenerator({
@@ -18,8 +19,9 @@ const generator = new OpenAPIGenerator({
 });
 
 const router = base.router({
-	auth: authContract,
-	user: userContract
+	auth: authRouter,
+	user: userRouter,
+	math: mathRouter
 });
 
 const contract = minifyContractRouter(router);

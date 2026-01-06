@@ -35,6 +35,18 @@ export default function TabOneScreen() {
 		console.log(data);
 	};
 
+	const doMath = async () => {
+		const client = await rpcClient();
+		const { error, data } = await tryCatch(client.math.doMath({ value: 10 }, { signal: controller.signal }));
+
+		if (error) {
+			console.error(error);
+			return;
+		}
+
+		console.log(data);
+	};
+
 	return (
 		<View>
 			<button type="button" onClick={login}>
@@ -43,6 +55,10 @@ export default function TabOneScreen() {
 
 			<button type="button" onClick={getAllUsers}>
 				Get Users
+			</button>
+
+			<button type="button" onClick={doMath}>
+				Do Math
 			</button>
 		</View>
 	);

@@ -6,7 +6,7 @@ import { base, publicProcedure } from '@server/lib/orpc';
 import { jwtVerify } from 'jose';
 import { z } from 'zod';
 
-export const authContract = base.router({
+export const authRouter = base.router({
 	login: publicProcedure
 		.input(
 			z.object({

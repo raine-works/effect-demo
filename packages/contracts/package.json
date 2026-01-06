@@ -1,0 +1,18 @@
+{
+	"name": "@effect-demo/contracts",
+	"version": "0.0.0",
+	"private": true,
+	"type": "module",
+	"exports": {
+		".": "./dist/common/v1/service_pb.ts"
+	},
+	"scripts": {
+		"build": "buf generate"
+	},
+	"dependencies": {
+		"@bufbuild/protobuf": "catalog:"
+	},
+	"devDependencies": {
+		"@bufbuild/protoc-gen-es": "catalog:"
+	}
+}

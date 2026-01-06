@@ -3,7 +3,7 @@ import { ORPCError } from '@orpc/server';
 import { base, privateProcedure, publicProcedure } from '@server/lib/orpc';
 import { z } from 'zod';
 
-export const userContract = base.router({
+export const userRouter = base.router({
 	getAllUsers: privateProcedure
 		.input(
 			z.object({ page: z.coerce.number().positive().default(1), pageSize: z.coerce.number().positive().default(30) })
